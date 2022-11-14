@@ -20,5 +20,7 @@ import board.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',board.views.mainPage)
+    path('',board.views.mainPage),
+    path('board/awsInputPage',board.views.awsInputPage),
+    path('board/githubInputPage',board.views.githubInputPage)
 ]

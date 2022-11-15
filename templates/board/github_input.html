@@ -2,9 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Github Input Form</title>
 </head>
 <body>
-
+<form method="post">
+  {% csrf_token %}
+    <h3>Github Access Token을 등록해주세요</h3>
+  <input name="github_access_token">
+  <button>등록</button>
+</form>
 </body>
 </html>

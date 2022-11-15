@@ -10,18 +10,24 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import json
+import os
+import secrets
 from pathlib import Path
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+secret_files = os.path.join(BASE_DIR, 'secret.json')
 
+with open(secret_files) as f:
+    secrets = json.loads(f.read())
+
+AUTH_USER_MODEL = 'accounts.User'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-t%c9*=m_4u4-m-5))&$2h=n%nm20)&pbd14!pyz(3lp15ubh$8'
-
+SECRET_KEY = secrets['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -37,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'board'
+    'board',
+    'accounts'
 ]
 
 MIDDLEWARE = [
@@ -76,8 +83,13 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': secrets['DB_NAME'],
+        'USER' : secrets['DB_USER'],
+        'PASSWORD' : secrets['DB_PASSWORD'],
+        'HOST' : secrets['DB_HOST'],
+        'PORT' : secrets['DB_PORT'],
+        'OPTIONS' : {'init_command' : 'SET sql_mode="STRICT_TRANS_TABLES"'}
     }
 }
 

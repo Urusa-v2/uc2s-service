@@ -16,11 +16,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+import accounts.views
 import board.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',board.views.mainPage),
     path('board/awsInputPage',board.views.awsInputPage),
-    path('board/githubInputPage',board.views.githubInputPage)
+    path('board/githubInputPage',board.views.githubInputPage),
+
+    path('accounts/signup', accounts.views.singup),
+    path('accounts/signout', accounts.views.signout),
+    path('accounts/login', accounts.views.login),
+    path('accounts/logout', accounts.views.logout)
+
 ]

@@ -5,6 +5,19 @@
     <title>MAIN PAGE</title>
 </head>
 <body>
-MAIN PAGE
+<h3>MAIN PAGE</h3>
+User : {{ request.user }}
+<br>
+<a href="/accounts/signup">회원가입</a>
+<br>
+<a href="/accounts/signout">회원탈퇴</a>
+<br>
+<a href="/accounts/login">로그인</a>
+<br>
+<a href="/accounts/logout">로그아웃</a>
+<br>
+<a href="/board/awsInputPage">aws token 입력</a>
+<br>
+<a href="/board/githubInputPage">github token 입력</a>
 </body>
 </html>

@@ -1,5 +1,6 @@
 from accounts.models import User
 from django.shortcuts import render
+from django.db.models import Q
 
 # Create your views here.
 def mainPage(request):
@@ -32,3 +33,14 @@ def githubInputPage(request):
             'github_access_token': github_access_token
         }
         return render(request, 'board/github_output.html',context)
+
+def getTokenPage(request):
+    if request.method == "GET":
+        aws_access_token = User.objects.filter(id=request.user.id).values('aws_access_token')
+        github_access_token = User.objects.filter(id=request.user.id).values('github_access_token')
+        print('aws',aws_access_token)
+        context = {
+            'aat': aws_access_token,
+            'gat':github_access_token
+        }
+        return render(request, 'board/token_output.html',context)

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Token 확인하기</title>
+</head>
+<body>
+{% for aws in aat.all %}
+Your aws access token : {{ aws.aws_access_token }}
+{% endfor %}
+<br>
+{% for git in gat.all%}
+Your github access token : {{ git.github_access_token }}
+{% endfor %}
+<br>
+<a href="/">Home으로</a>
+</body>
+</html>

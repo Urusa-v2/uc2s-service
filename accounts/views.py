@@ -7,16 +7,23 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, logout as auth_logout # 함수이름과 겹치지않기 위해 수정
 
 from django.db import connection
+
+import os
+import sys
+import subprocess
+
 # 회원가입
 def singup(request):
     if request.method == "GET":
         signupForm = SignupForm()
         return render(request,'accounts/signup.html', {'signupForm':signupForm})
     elif request.method == "POST":
-        signupForm = SignupForm(request.POST)
+        signupForm = request.POST.get('aws_access_key_id',None)
         if signupForm.is_valid():
+            #userid = signupForm('username')
             user = signupForm.save(commit=False)
             user.save()
+            #subprocess.Popen(['setjenkinsuser.sh %s' % (userid)], shell=True)
 
         #cursor = connection.cursor()
         #strsql = "SELECT * FROM accounts_user"

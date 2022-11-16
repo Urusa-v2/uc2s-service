@@ -32,6 +32,7 @@ urlpatterns = [
     path('accounts/signup', accounts.views.singup),
     path('accounts/signout', accounts.views.signout),
     path('accounts/login', accounts.views.login),
-    path('accounts/logout', accounts.views.logout)
+    path('accounts/logout', accounts.views.logout),
+    path('board/startcicd',board.views.startcicd),
 
 ]

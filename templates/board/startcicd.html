@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AWS Input Form</title>
+</head>
+<body>
+<form method="post">
+  {% csrf_token %}
+    <h3>github 저장소 주소 입력</h3>
+  <input name="githubrepo_address">
+    <br>
+    <br>
+  <button>등록</button>
+</form>
+</body>
+</html>

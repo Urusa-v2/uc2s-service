@@ -1,7 +1,7 @@
-from accounts.models import User
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.db import connection
+from board.models import Token
 
 
 import os
@@ -19,10 +19,11 @@ def awsInputPage(request):
         aws_access_key_id = request.POST.get('aws_access_key_id',None)
         aws_secret_access_key = request.POST.get('aws_secret_access_key', None)
         if ( not aws_access_key_id) and (not aws_secret_access_key) :
-            user = User.objects.get(id=request.user.id)
-            user.aws_access_key_id = aws_access_key_id
-            user.aws_secret_access_key = aws_secret_access_key
-            user.save()
+            #user = User.objects.get(id=request.user.id)
+            Token.user = request.user
+            Token.aws_access_key_id = aws_access_key_id
+            Token.aws_secret_access_key = aws_secret_access_key
+            Token.save()
             context = {
               'aws_access_key_id': aws_access_key_id,
               'aws_secret_access_key': aws_secret_access_key
@@ -33,15 +34,15 @@ def awsInputPage(request):
 
 
 def deleteAwsKeyId(request):
-    user = User.objects.get(id=request.user.id)
-    user.aws_access_key_id = ''
-    user.save()
+    token = Token.objects.get(id=request.user.id)
+    token.aws_access_key_id = ''
+    token.save()
     return redirect('/')
 
 def deleteAwsSecretkey(request):
-    user = User.objects.get(id=request.user.id)
-    user.aws_secret_access_key = ''
-    user.save()
+    token = Token.objects.get(id=request.user.id)
+    token.aws_secret_access_key = ''
+    token.save()
     return redirect('/')
 
 
@@ -51,9 +52,9 @@ def githubInputPage(request):
     if request.method == "POST":
         github_access_token = request.POST.get('github_access_token', None)
         if( not github_access_token):
-            user = User.objects.get(id=request.user.id)
-            user.github_access_token = github_access_token
-            user.save()
+            Token.user = request.user
+            Token.github_access_token = github_access_token
+            Token.save()
 
         #cursor = connection.cursor()
         #strsql = "SELECT id,username,github_access_token FROM accounts_user"
@@ -72,17 +73,17 @@ def githubInputPage(request):
             return redirect('/')
 
 def deleteGitToken(request):
-    user = User.objects.get(id=request.user.id)
-    user.github_access_token = ''
-    user.save()
+    token = Token.objects.get(id=request.user.id)
+    token.github_access_token = ''
+    token.save()
     return redirect('/')
 
 
 def getTokenPage(request):
     if request.method == "GET":
-        aws_access_key_id = User.objects.filter(id=request.user.id).values('aws_access_key_id')
-        aws_secret_access_key = User.objects.filter(id=request.user.id).values('aws_secret_access_key')
-        github_access_token = User.objects.filter(id=request.user.id).values('github_access_token')
+        aws_access_key_id = Token.objects.filter(id=request.user.id).values('aws_access_key_id')
+        aws_secret_access_key = Token.objects.filter(id=request.user.id).values('aws_secret_access_key')
+        github_access_token = Token.objects.filter(id=request.user.id).values('github_access_token')
         print('aws',aws_access_key_id,aws_secret_access_key)
 
         #cursor = connection.cursor()

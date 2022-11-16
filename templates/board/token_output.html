@@ -5,12 +5,18 @@
     <title>Token 확인하기</title>
 </head>
 <body>
-{% for aws in aat.all %}
-Your aws access token : {{ aws.aws_access_token }}
+{% for id in aak.all %}
+Your aws access key id : {{ id.aws_access_key_id }}
 {% endfor %}
 <br>
-{% for git in gat.all%}
-Your github access token : {{ git.github_access_token }}
+
+{% for key in asa.all %}
+Your aws secret access key : {{ key.aws_secret_access_key }}
+{% endfor %}
+<br>
+
+{% for token in gat.all%}
+Your github access token : {{ token.github_access_token }}
 {% endfor %}
 <br>
 <a href="/">Home으로</a>

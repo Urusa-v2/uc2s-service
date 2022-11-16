@@ -8,7 +8,8 @@
 <form method="post">
   {% csrf_token %}
     <h3>AWS Access Token을 등록해주세요</h3>
-  <input name="aws_access_token">
+  <input name="aws_access_key_id">
+    <input name="aws_secret_access_key">
   <button>등록</button>
 </form>
 </body>

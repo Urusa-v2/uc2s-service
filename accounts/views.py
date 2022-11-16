@@ -6,7 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, logout as auth_logout # 함수이름과 겹치지않기 위해 수정
 
-
+from django.db import connection
 # 회원가입
 def singup(request):
     if request.method == "GET":
@@ -17,6 +17,15 @@ def singup(request):
         if signupForm.is_valid():
             user = signupForm.save(commit=False)
             user.save()
+
+        #cursor = connection.cursor()
+        #strsql = "SELECT * FROM accounts_user"
+        #result = cursor.execute(strsql)
+        #st = cursor.fetchall()
+        #connection.commit()
+        #connection.close()
+        #print('st',st)
+            return redirect('/accounts/login')
 
         return redirect('/')
 
@@ -30,6 +39,8 @@ def login(request):
         if loginForm.is_valid():
             auth_login(request, loginForm.get_user())
             return redirect('/')
+        else:
+            return redirect('/accounts/login')
 
 def logout(request):
     # 세션 정보를 지우는 것

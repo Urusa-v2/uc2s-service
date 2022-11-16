@@ -26,6 +26,9 @@ urlpatterns = [
     path('board/githubInputPage',board.views.githubInputPage),
     path('board/getTokenPage',board.views.getTokenPage),
 
+    path('board/aws_key_id_delete',board.views.deleteAwsKeyId),
+    path('board/aws_secret_key_delete',board.views.deleteAwsSecretkey),
+
     path('accounts/signup', accounts.views.singup),
     path('accounts/signout', accounts.views.signout),
     path('accounts/login', accounts.views.login),

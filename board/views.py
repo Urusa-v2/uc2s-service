@@ -1,5 +1,5 @@
 from accounts.models import User
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.db import connection
 # Create your views here.
@@ -32,6 +32,20 @@ def awsInputPage(request):
             'aws_secret_access_key' : aws_secret_access_key
         }
         return render(request,'board/aws_output.html',context)
+
+
+def deleteAwsKeyId(request):
+    user = User.objects.get(id=request.user.id)
+    user.aws_access_key_id = ''
+    user.save()
+    return redirect('/')
+
+def deleteAwsSecretkey(request):
+    user = User.objects.get(id=request.user.id)
+    user.aws_secret_access_key = ''
+    user.save()
+    return redirect('/')
+
 
 def githubInputPage(request):
     if request.method == "GET":

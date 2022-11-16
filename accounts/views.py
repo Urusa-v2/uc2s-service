@@ -18,12 +18,12 @@ def singup(request):
         signupForm = SignupForm()
         return render(request,'accounts/signup.html', {'signupForm':signupForm})
     elif request.method == "POST":
-        signupForm = request.POST.get('aws_access_key_id',None)
+        signupForm = SignupForm(request.POST)
         if signupForm.is_valid():
-            #userid = signupForm('username')
             user = signupForm.save(commit=False)
             user.save()
-            #subprocess.Popen(['setjenkinsuser.sh %s' % (userid)], shell=True)
+            username = user.get_username()
+            subprocess.Popen(['setjenkinsuser.sh %s' % (username)], shell=True)
 
         #cursor = connection.cursor()
         #strsql = "SELECT * FROM accounts_user"
@@ -55,6 +55,6 @@ def logout(request):
     return redirect('/')
 
 def signout(request):
-    user = User.objects.get(id=request.user.id)
+    User.objects.get(id=request.user.id)
     user.delete()
     return redirect('/')

@@ -70,6 +70,13 @@ def githubInputPage(request):
         }
         return render(request, 'board/github_output.html',context)
 
+def deleteGitToken(request):
+    user = User.objects.get(id=request.user.id)
+    user.github_access_token = ''
+    user.save()
+    return redirect('/')
+
+
 def getTokenPage(request):
     if request.method == "GET":
         aws_access_key_id = User.objects.filter(id=request.user.id).values('aws_access_key_id')

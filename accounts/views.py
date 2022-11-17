@@ -33,6 +33,8 @@ def singup(request):
 
             # 실행 결과인 TOKEN 값만을 저장
             jenkinstoken = result.communicate()[0]
+            # 반환 결과는 바이트 표현이 붙은 ascii 형식의 바이트 코드이다. 이를 복호화하여 유니코드 문자열로 변환한다
+            jenkinstoken = jenkinstoken.decode('ascii')
             # 해당 유저의 TOKEN TABLE 생성 ( 생성자 )
             token=Token()
             # 회원 가입한 유저를 해당 TABLE 의 유저로 지정

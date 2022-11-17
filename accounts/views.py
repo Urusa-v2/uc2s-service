@@ -28,13 +28,13 @@ def singup(request):
 
             #result = subprocess.Popen(['setjenkinsuser.sh %s' % (username)], shell=True , stdout=subprocess.PIPE)
            # token = result.communicate()[0]
-            # print ( token )
-           # Token.user_id = userid
-          # Token.jenkins_access_token = token
-           # Token.save()
+            #print ( token )
+            #Token.user_id = userid
+          ## Token.user = Token.objects.get(username = username)
+           # Token.jenkins_access_token = token
+            #Token.save()
 
             return redirect('/accounts/login')
-
         return redirect('/')
 
 # 로그인 입력 양식이 주어져야함

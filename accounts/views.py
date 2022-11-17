@@ -23,15 +23,16 @@ def singup(request):
             user = signupForm.save(commit=False)
             user.save()
             username = user.get_username()
+            #userid = user.get_userid()
             subprocess.Popen(['setjenkinsuser.sh %s' % (username)], shell=True)
 
-        #cursor = connection.cursor()
-        #strsql = "SELECT * FROM accounts_user"
-        #result = cursor.execute(strsql)
-        #st = cursor.fetchall()
-        #connection.commit()
-        #connection.close()
-        #print('st',st)
+            #result = subprocess.Popen(['setjenkinsuser.sh %s' % (username)], shell=True , stdout=subprocess.PIPE)
+           # token = result.communicate()[0]
+            # print ( token )
+           # Token.user_id = userid
+          # Token.jenkins_access_token = token
+           # Token.save()
+
             return redirect('/accounts/login')
 
         return redirect('/')

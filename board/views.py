@@ -34,13 +34,13 @@ def awsInputPage(request):
 
 
 def deleteAwsKeyId(request):
-    token = Token.objects.get(id=request.user.id)
+    token = Token.objects.get(user_id=request.user.id)
     token.aws_access_key_id = ''
     token.save()
     return redirect('/')
 
 def deleteAwsSecretkey(request):
-    token = Token.objects.get(id=request.user.id)
+    token = Token.objects.get(user_id=request.user.id)
     token.aws_secret_access_key = ''
     token.save()
     return redirect('/')
@@ -73,7 +73,7 @@ def githubInputPage(request):
             return redirect('/')
 
 def deleteGitToken(request):
-    token = Token.objects.get(id=request.user.id)
+    token = Token.objects.get(user_id=request.user.id)
     token.github_access_token = ''
     token.save()
     return redirect('/')
@@ -81,9 +81,9 @@ def deleteGitToken(request):
 
 def getTokenPage(request):
     if request.method == "GET":
-        aws_access_key_id = Token.objects.filter(id=request.user.id).values('aws_access_key_id')
-        aws_secret_access_key = Token.objects.filter(id=request.user.id).values('aws_secret_access_key')
-        github_access_token = Token.objects.filter(id=request.user.id).values('github_access_token')
+        aws_access_key_id = Token.objects.filter(user_id=request.user.id).values('aws_access_key_id')
+        aws_secret_access_key = Token.objects.filter(user_id=request.user.id).values('aws_secret_access_key')
+        github_access_token = Token.objects.filter(user_id=request.user.id).values('github_access_token')
         print('aws',aws_access_key_id,aws_secret_access_key)
 
         #cursor = connection.cursor()
@@ -107,13 +107,12 @@ def startcicd(request):
     if request.method == "POST":
         githubrepo_address = request.POST.get('githubrepo_address', None)
         if( not githubrepo_address) :
-            #서브 프로세스로 shell 실행 -> ssh 로 젠킨스 노드에 명령 전달
             print( githubrepo_address)
 
             # key 가져오기
-            aws_access_key_id = "asdasd"
-            aws_secret_access_key = "asdadasd"
-            github_access_token = "asdasdsad"
+            aws_access_key_id = Token.objects.filter(user_id=request.user.id).values('aws_access_key_id')
+            aws_secret_access_key = Token.objects.filter(user_id=request.user.id).values('aws_secret_access_key')
+            github_access_token = Token.objects.filter(user_id=request.user.id).values('github_access_token')
 
             # shell 을 통해 jenkins 에 데이터 전달 및 실행
             subprocess.Popen(['setjenkins.sh %s %s %s %s'%(githubrepo_address,aws_access_key_id,aws_secret_access_key,github_access_token)],shell=True)

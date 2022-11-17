@@ -74,14 +74,6 @@ def getTokenPage(request):
         github_access_token = Token.objects.filter(user_id=request.user.id).values('github_access_token')
         print('aws',aws_access_key_id,aws_secret_access_key)
 
-        #cursor = connection.cursor()
-        #strsql = "SELECT * FROM accounts_user"
-        #result = cursor.execute(strsql)
-        #st = cursor.fetchall()
-        #connection.commit()
-        #connection.close()
-        #print('st',st)
-
         context = {
             'aak': aws_access_key_id,
             'asa':aws_secret_access_key,

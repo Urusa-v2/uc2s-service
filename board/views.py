@@ -85,6 +85,7 @@ def startcicd(request):
     if request.method == "GET":
         return render(request, 'board/startcicd.html')
     if request.method == "POST":
+        job_name = request.POST.get('job_name', None)
         githubrepo_address = request.POST.get('githubrepo_address', None)
         if( not githubrepo_address) :
             print( githubrepo_address)
@@ -94,8 +95,11 @@ def startcicd(request):
             aws_secret_access_key = Token.objects.filter(user_id=request.user.id).values('aws_secret_access_key')
             github_access_token = Token.objects.filter(user_id=request.user.id).values('github_access_token')
 
-            # shell 을 통해 jenkins 에 데이터 전달 및 실행
-            subprocess.Popen(['setjenkins.sh %s %s %s %s'%(githubrepo_address,aws_access_key_id,aws_secret_access_key,github_access_token)],shell=True)
+            # user id 가져오기 -> Jenkins 작업 공간 생성용
+            user_id = request.user.id
+
+            # shell 을 통해 jenkins 에 데이터 전달 및 실행 - 작업 공간 생성 & 파이프 라인 생성
+            subprocess.Popen(['setjenkins.sh $s %s %s %s %s %6'%(job_name,user_id,githubrepo_address,aws_access_key_id,aws_secret_access_key,github_access_token)],shell=True)
             context = {
                 'githubrepo_address': githubrepo_address
             }

@@ -1,5 +1,6 @@
 from .forms import SignupForm
 from .models import User
+from board.models import Token
 from django.shortcuts import render
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -23,16 +24,16 @@ def singup(request):
             user = signupForm.save(commit=False)
             user.save()
             username = user.get_username()
-            #userid = user.get_userid()
-            subprocess.Popen(['setjenkinsuser.sh %s' % (username)], shell=True)
 
-            #result = subprocess.Popen(['setjenkinsuser.sh %s' % (username)], shell=True , stdout=subprocess.PIPE)
-           # token = result.communicate()[0]
-            #print ( token )
-            #Token.user_id = userid
-          ## Token.user = Token.objects.get(username = username)
-           # Token.jenkins_access_token = token
-            #Token.save()
+            signup_user = User.objects.get(username=username) # 회원 가입한 user 가져오기
+            userid = signup_user.id # 해당 user 의 ID 값 가져오기
+
+            result = subprocess.Popen(['setjenkinsuser.sh %s' % (username)], shell=True , stdout=subprocess.PIPE)
+            jenkinstoken = result.communicate()[0]
+            token=Token()
+            token.user = User.objects.get(username=username)
+            token.jenkins_access_token = jenkinstoken
+            token.save()
 
             return redirect('/accounts/login')
         return redirect('/')
@@ -56,6 +57,6 @@ def logout(request):
     return redirect('/')
 
 def signout(request):
-    User.objects.get(id=request.user.id)
+    user=User.objects.get(id=request.user.id)
     user.delete()
     return redirect('/')

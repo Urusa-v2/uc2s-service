@@ -3,7 +3,6 @@ from django.db.models import Q
 from django.db import connection
 from board.models import Token
 
-
 import os
 import sys
 import subprocess
@@ -16,17 +15,15 @@ def awsInputPage(request):
     if request.method == "GET":
         return render(request, 'board/aws_input.html')
     if request.method == "POST":
-        aws_access_key_id = request.POST.get('aws_access_key_id',None)
-        aws_secret_access_key = request.POST.get('aws_secret_access_key', None)
-        if ( not aws_access_key_id) and (not aws_secret_access_key) :
-            #user = User.objects.get(id=request.user.id)
-            Token.user = request.user
-            Token.aws_access_key_id = aws_access_key_id
-            Token.aws_secret_access_key = aws_secret_access_key
-            Token.save()
+        token = Token.objects.get(user = request.user)
+        token.user = request.user
+        token.aws_access_key_id = request.POST.get('aws_access_key_id',None)
+        token.aws_secret_access_key = request.POST.get('aws_secret_access_key', None)
+        if ( token.aws_access_key_id != "" ) and (token.aws_secret_access_key != "") :
+            token.save()
             context = {
-              'aws_access_key_id': aws_access_key_id,
-              'aws_secret_access_key': aws_secret_access_key
+              'aws_access_key_id': token.aws_access_key_id,
+              'aws_secret_access_key': token.aws_secret_access_key
             }
             return render(request, 'board/aws_output.html', context)
         else :
@@ -34,13 +31,13 @@ def awsInputPage(request):
 
 
 def deleteAwsKeyId(request):
-    token = Token.objects.get(user_id=request.user.id)
+    token = Token.objects.get(user = request.user)
     token.aws_access_key_id = ''
     token.save()
     return redirect('/')
 
 def deleteAwsSecretkey(request):
-    token = Token.objects.get(user_id=request.user.id)
+    token = Token.objects.get(user = request.user)
     token.aws_secret_access_key = ''
     token.save()
     return redirect('/')
@@ -50,23 +47,14 @@ def githubInputPage(request):
     if request.method == "GET":
         return render(request, 'board/github_input.html')
     if request.method == "POST":
-        github_access_token = request.POST.get('github_access_token', None)
-        if( not github_access_token):
-            Token.user = request.user
-            Token.github_access_token = github_access_token
-            Token.save()
-
-        #cursor = connection.cursor()
-        #strsql = "SELECT id,username,github_access_token FROM accounts_user"
-        #result = cursor.execute(strsql)
-        #st = cursor.fetchall()
-        #connection.commit()
-        #connection.close()
-        #print('st', st)
-
+        token = Token.objects.get(user = request.user)
+        token.github_access_token = request.POST.get('github_access_token', None)
+        if( token.github_access_token != "" ):
+            token.user = request.user
+            token.save()
 
             context = {
-                'github_access_token': github_access_token
+                'github_access_token': token.github_access_token
             }
             return render(request, 'board/github_output.html',context)
         else :

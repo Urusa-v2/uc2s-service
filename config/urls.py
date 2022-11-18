@@ -26,6 +26,10 @@ urlpatterns = [
     path('board/githubInputPage',board.views.githubInputPage),
     path('board/getTokenPage',board.views.getTokenPage),
 
+    path('board/getEksList',board.views.eks_list),
+    path('board/getEksDes',board.views.eks_des),
+    path('board/getRepoDes',board.views.repo_des),
+
     path('board/aws_key_id_delete',board.views.deleteAwsKeyId),
     path('board/aws_secret_key_delete',board.views.deleteAwsSecretkey),
     path('board/github_token_delete',board.views.deleteGitToken),

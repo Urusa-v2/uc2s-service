@@ -151,12 +151,11 @@ def eks_des(request):
             region_name=region
         )
 
-        response = client.list_clusters()
+        # cluster 이름 정보 불러오기
+        response_names = client.list_clusters()
 
-        c_list = response
-        response = ''
-
-        for i in c_list['clusters']:
+        # cluster 이름으로 해당 describe 정보 받기
+        for i in response_names['clusters']:
             response = client.describe_cluster(
                 name=i
             )

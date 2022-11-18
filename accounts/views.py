@@ -1,5 +1,6 @@
 from .forms import SignupForm
 from .models import User
+from board.models import Token
 from django.shortcuts import render
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -23,17 +24,25 @@ def singup(request):
             user = signupForm.save(commit=False)
             user.save()
             username = user.get_username()
-            subprocess.Popen(['setjenkinsuser.sh %s' % (username)], shell=True)
 
-        #cursor = connection.cursor()
-        #strsql = "SELECT * FROM accounts_user"
-        #result = cursor.execute(strsql)
-        #st = cursor.fetchall()
-        #connection.commit()
-        #connection.close()
-        #print('st',st)
+            #signup_user = User.objects.get(username=username) # 회원 가입한 user 가져오기
+            #userid = signup_user.id # 해당 user 의 ID 값 가져오기
+
+            # 해당 SHELL 은 jenkins 유저 생성 명령 및 api 토큰 생성 명령 실행을 내리고, PIPE 를 통해 결과를 반환한다
+            result = subprocess.Popen(['setjenkinsuser.sh %s' % (username)], shell=True , stdout=subprocess.PIPE)
+
+            # 실행 결과인 TOKEN 값만을 저장
+            jenkinstoken = result.communicate()[0]
+            # 반환 결과는 바이트 표현이 붙은 ascii 형식의 바이트 코드이다. 이를 복호화하여 유니코드 문자열로 변환한다
+            jenkinstoken = jenkinstoken.decode('ascii')
+            # 해당 유저의 TOKEN TABLE 생성 ( 생성자 )
+            token=Token()
+            # 회원 가입한 유저를 해당 TABLE 의 유저로 지정
+            token.user = User.objects.get(username=username)
+            token.jenkins_access_token = jenkinstoken
+            token.save()
+
             return redirect('/accounts/login')
-
         return redirect('/')
 
 # 로그인 입력 양식이 주어져야함
@@ -55,6 +64,6 @@ def logout(request):
     return redirect('/')
 
 def signout(request):
-    User.objects.get(id=request.user.id)
+    user=User.objects.get(id=request.user.id)
     user.delete()
     return redirect('/')

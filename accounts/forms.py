@@ -3,7 +3,12 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import User
 from .models import Groups
 
+class groupfield(forms.ModelChoiceField):
+    def name_form_instance(self, obj):
+        return obj.name
+
 class SignupForm(UserCreationForm):
+    #group = groupfield(Groups.objects)
     class Meta(UserCreationForm.Meta):
         model = User
         fields = ('username','email','group')

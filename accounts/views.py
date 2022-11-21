@@ -1,5 +1,8 @@
 from .forms import SignupForm
+from .forms import LeaderSignupForm
+from .forms import groupForm
 from .models import User
+from .models import Groups
 from board.models import Token
 from django.shortcuts import render
 from django.contrib.auth.forms import AuthenticationForm
@@ -13,7 +16,12 @@ import os
 import sys
 import subprocess
 
-# 회원가입
+# 회원가입시 일반 유저인지 리더인지 선택
+
+def chooseuser(request):
+    return render(request,'accounts/setsignupuser.html')
+
+# 팀원 개발자 회원가입
 def singup(request):
     if request.method == "GET":
         signupForm = SignupForm()
@@ -22,28 +30,75 @@ def singup(request):
         signupForm = SignupForm(request.POST)
         if signupForm.is_valid():
             user = signupForm.save(commit=False)
+            user.isleader=False
             user.save()
-            username = user.get_username()
+            return redirect('/accounts/login')
+        return render(request, 'board/errorpage.html')
 
-            #signup_user = User.objects.get(username=username) # 회원 가입한 user 가져오기
-            #userid = signup_user.id # 해당 user 의 ID 값 가져오기
+# 그룹 생성하기
+def createGroup(request):
+    if request.method == "GET":
+        groupform = groupForm()
+        return render(request,'accounts/creategroup.html', {'groupForm':groupform})
+    elif request.method =="POST":
+        groupform = groupForm(request.POST)
+        if groupform.is_valid():
+            group = groupform.save(commit=False)
+            group.save()
+            return redirect('/accounts/leadersingup/' + str(group.id))
+        return render(request, 'board/errorpage.html')
+
+# 그룹장 회원가입
+def leadersingup(request, bid):
+    if request.method == "GET":
+        signupForm = LeaderSignupForm()
+        return render(request,'accounts/signup.html', {'signupForm':LeaderSignupForm})
+    elif request.method == "POST":
+        signupForm = LeaderSignupForm(request.POST)
+        if signupForm.is_valid():
+            user = signupForm.save(commit=False)
+            user.isleader = True
+            user.group = Groups.objects.get(id=bid)
+            user.save()
+            # user id 가져오기
+            username = user.get_username()
 
             # 해당 SHELL 은 jenkins 유저 생성 명령 및 api 토큰 생성 명령 실행을 내리고, PIPE 를 통해 결과를 반환한다
             result = subprocess.Popen(['setjenkinsuser.sh %s' % (username)], shell=True , stdout=subprocess.PIPE)
-
             # 실행 결과인 TOKEN 값만을 저장
             jenkinstoken = result.communicate()[0]
             # 반환 결과는 바이트 표현이 붙은 ascii 형식의 바이트 코드이다. 이를 복호화하여 유니코드 문자열로 변환한다
             jenkinstoken = jenkinstoken.decode('ascii')
             # 해당 유저의 TOKEN TABLE 생성 ( 생성자 )
             token=Token()
-            # 회원 가입한 유저를 해당 TABLE 의 유저로 지정
-            token.user = User.objects.get(username=username)
+            # 어떤 그룹의 토큰인지 설정
+            token.group = Groups.objects.get(id=bid)
             token.jenkins_access_token = jenkinstoken
             token.save()
 
-            return redirect('/accounts/login')
-        return redirect('/')
+            # 토큰 입력 페이지로 넘어가면, 회원 가입한 유저의 그룹의 토큰을 입력받는다. 따라서 토큰의 id 를 넘겨서 해당 table 에 입력받게 한다
+            return redirect('/accounts/inputtoken/' + str(token.id))
+        return render(request, 'board/errorpage.html')
+
+# 그룹장의 토큰 입력 기능
+def TokenInputPage(request, bid):
+    if request.method == "GET":
+        return render(request, 'accounts/token_input.html')
+    if request.method == "POST":
+        token = Token.objects.get(id=bid)
+        token.aws_access_key_id = request.POST.get('aws_access_key_id',None)
+        token.aws_secret_access_key = request.POST.get('aws_secret_access_key', None)
+        token.github_access_token = request.POST.get('github_access_token', None)
+        if ( token.aws_access_key_id != "" ) and (token.aws_secret_access_key != "") and (token.github_access_token != ""):
+            token.save()
+            context = {
+              'aws_access_key_id': token.aws_access_key_id,
+              'aws_secret_access_key': token.aws_secret_access_key,
+              'github_access_token': token.github_access_token
+            }
+            return render(request, 'accounts/token_confirm.html', context)
+        else :
+            return render(request, 'board/errorpage.html')
 
 # 로그인 입력 양식이 주어져야함
 def login(request):

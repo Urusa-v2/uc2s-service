@@ -22,8 +22,7 @@ import board.views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',board.views.mainPage),
-    path('board/awsInputPage',board.views.awsInputPage),
-    path('board/githubInputPage',board.views.githubInputPage),
+    path('accounts/inputtoken/<int:bid>',accounts.views.TokenInputPage),
     path('board/getTokenPage',board.views.getTokenPage),
 
     path('board/getEksList',board.views.eks_list),
@@ -33,7 +32,10 @@ urlpatterns = [
     path('board/aws_key_id_delete',board.views.deleteAwsKeyId),
     path('board/aws_secret_key_delete',board.views.deleteAwsSecretkey),
     path('board/github_token_delete',board.views.deleteGitToken),
+
+    path('accounts/chooseuser', accounts.views.chooseuser),
     path('accounts/signup', accounts.views.singup),
+    path('accounts/leadersingup', accounts.views.leadersingup),
     path('accounts/signout', accounts.views.signout),
     path('accounts/login', accounts.views.login),
     path('accounts/logout', accounts.views.logout),

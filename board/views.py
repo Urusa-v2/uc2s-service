@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.db import connection
 from board.models import Token
+from accounts.models import Groups
 
 import os
 import sys
@@ -14,59 +15,22 @@ def mainPage(request):
     return render(request, 'board/main.html')
 
 
-def awsInputPage(request):
-    if request.method == "GET":
-        return render(request, 'board/aws_input.html')
-    if request.method == "POST":
-        token = Token.objects.get(user=request.user)
-        token.user = request.user
-        token.aws_access_key_id = request.POST.get('aws_access_key_id', None)
-        token.aws_secret_access_key = request.POST.get('aws_secret_access_key', None)
-        if (token.aws_access_key_id != "") and (token.aws_secret_access_key != ""):
-            token.save()
-            context = {
-                'aws_access_key_id': token.aws_access_key_id,
-                'aws_secret_access_key': token.aws_secret_access_key
-            }
-            return render(request, 'board/aws_output.html', context)
-        else:
-            return redirect('/')
-
-
 def deleteAwsKeyId(request):
-    token = Token.objects.get(user=request.user)
+    token = Token.objects.get(group=request.user.group)
     token.aws_access_key_id = ''
     token.save()
     return redirect('/')
 
 
 def deleteAwsSecretkey(request):
-    token = Token.objects.get(user=request.user)
+    token = Token.objects.get(group=request.user.group)
     token.aws_secret_access_key = ''
     token.save()
     return redirect('/')
 
 
-def githubInputPage(request):
-    if request.method == "GET":
-        return render(request, 'board/github_input.html')
-    if request.method == "POST":
-        token = Token.objects.get(user=request.user)
-        token.github_access_token = request.POST.get('github_access_token', None)
-        if (token.github_access_token != ""):
-            token.user = request.user
-            token.save()
-
-            context = {
-                'github_access_token': token.github_access_token
-            }
-            return render(request, 'board/github_output.html', context)
-        else:
-            return redirect('/')
-
-
 def deleteGitToken(request):
-    token = Token.objects.get(user_id=request.user.id)
+    token = Token.objects.get(group=request.user.group)
     token.github_access_token = ''
     token.save()
     return redirect('/')
@@ -74,17 +38,17 @@ def deleteGitToken(request):
 
 def getTokenPage(request):
     if request.method == "GET":
-        aws_access_key_id = Token.objects.filter(user_id=request.user.id).values('aws_access_key_id')
-        aws_secret_access_key = Token.objects.filter(user_id=request.user.id).values('aws_secret_access_key')
-        github_access_token = Token.objects.filter(user_id=request.user.id).values('github_access_token')
-        print('aws', aws_access_key_id, aws_secret_access_key)
+        aws_access_key_id = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
+        aws_secret_access_key = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
+        github_access_token = Token.objects.filter(group=request.user.group).values('github_access_token')
+        print('aws',aws_access_key_id,aws_secret_access_key)
 
         context = {
             'aak': aws_access_key_id,
-            'asa': aws_secret_access_key,
-            'gat': github_access_token
+            'asa':aws_secret_access_key,
+            'gat':github_access_token
         }
-        return render(request, 'board/token_output.html', context)
+        return render(request, 'board/token_output.html',context)
 
 
 def startcicd(request):
@@ -96,9 +60,9 @@ def startcicd(request):
             print(githubrepo_address)
 
             # key 가져오기
-            aws_access_key_id = Token.objects.filter(user_id=request.user.id).values('aws_access_key_id')
-            aws_secret_access_key = Token.objects.filter(user_id=request.user.id).values('aws_secret_access_key')
-            github_access_token = Token.objects.filter(user_id=request.user.id).values('github_access_token')
+            aws_access_key_id = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
+            aws_secret_access_key = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
+            github_access_token = Token.objects.filter(group=request.user.group).values('github_access_token')
 
             # shell 을 통해 jenkins 에 데이터 전달 및 실행
             subprocess.Popen(['setjenkins.sh %s %s %s %s' % (
@@ -114,8 +78,8 @@ def startcicd(request):
 
 def eks_list(request):
     ''' 클러스터 목록 조회'''
-    access_key_set = Token.objects.filter(user=request.user).values('aws_access_key_id')
-    secret_key_set = Token.objects.filter(user=request.user).values('aws_secret_access_key')
+    access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
+    secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
     for access_key_s, secret_key_s in zip(access_key_set, secret_key_set):
         access_key = access_key_s['aws_access_key_id']
         secret_key = secret_key_s['aws_secret_access_key']
@@ -137,8 +101,8 @@ def eks_list(request):
 
 def eks_des(request):
     ''' 모든 클러스터에 대한 상세정보 조회'''
-    access_key_set = Token.objects.filter(user=request.user).values('aws_access_key_id')
-    secret_key_set = Token.objects.filter(user=request.user).values('aws_secret_access_key')
+    access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
+    secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
     for access_key_s, secret_key_s in zip(access_key_set, secret_key_set):
         access_key = access_key_s['aws_access_key_id']
         secret_key = secret_key_s['aws_secret_access_key']
@@ -170,8 +134,8 @@ def eks_des(request):
 
 def repo_des(request):
     ''' 모든 레포지토리에 대한 상세정보 조회'''
-    access_key_set = Token.objects.filter(user=request.user).values('aws_access_key_id')
-    secret_key_set = Token.objects.filter(user=request.user).values('aws_secret_access_key')
+    access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
+    secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
     for access_key_s, secret_key_s in zip(access_key_set, secret_key_set):
         access_key = access_key_s['aws_access_key_id']
         secret_key = secret_key_s['aws_secret_access_key']

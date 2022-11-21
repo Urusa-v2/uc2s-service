@@ -34,8 +34,9 @@ urlpatterns = [
     path('board/github_token_delete',board.views.deleteGitToken),
 
     path('accounts/chooseuser', accounts.views.chooseuser),
+    path('accounts/creategroup',accounts.views.createGroup),
     path('accounts/signup', accounts.views.singup),
-    path('accounts/leadersingup', accounts.views.leadersingup),
+    path('accounts/leadersingup/<int:bid>', accounts.views.leadersingup),
     path('accounts/signout', accounts.views.signout),
     path('accounts/login', accounts.views.login),
     path('accounts/logout', accounts.views.logout),

@@ -1,5 +1,6 @@
 from .forms import SignupForm
 from .forms import LeaderSignupForm
+from .forms import groupForm
 from .models import User
 from .models import Groups
 from board.models import Token
@@ -29,34 +30,38 @@ def singup(request):
         signupForm = SignupForm(request.POST)
         if signupForm.is_valid():
             user = signupForm.save(commit=False)
+            user.isleader=False
             user.save()
             return redirect('/accounts/login')
         return render(request, 'board/errorpage.html')
 
+# 그룹 생성하기
+def createGroup(request):
+    if request.method == "GET":
+        groupform = groupForm()
+        return render(request,'accounts/creategroup.html', {'groupForm':groupform})
+    elif request.method =="POST":
+        groupform = groupForm(request.POST)
+        if groupform.is_valid():
+            group = groupform.save(commit=False)
+            group.save()
+            return redirect('/accounts/leadersingup/' + str(group.id))
+        return render(request, 'board/errorpage.html')
+
 # 그룹장 회원가입
-def leadersingup(request):
+def leadersingup(request, bid):
     if request.method == "GET":
         signupForm = LeaderSignupForm()
-        return render(request,'accounts/signup.html', {'signupForm':signupForm})
+        return render(request,'accounts/signup.html', {'signupForm':LeaderSignupForm})
     elif request.method == "POST":
         signupForm = LeaderSignupForm(request.POST)
         if signupForm.is_valid():
             user = signupForm.save(commit=False)
+            user.isleader = True
+            user.group = Groups.objects.get(id=bid)
             user.save()
             # user id 가져오기
             username = user.get_username()
-            # group 이름 가져오기
-            signup_user = User.objects.get(username=username)  # 회원 가입한 user 가져오기
-            group_name = signup_user.group  # 해당 user 의 group 값 가져오기
-
-            # group 생성
-            group_object=Groups()
-            group_object.name=group_name
-            group_object.save()
-
-            # leader 권한 지정 및 그룹 지정
-            signup_user.isleader = True
-            signup_user.save()
 
             # 해당 SHELL 은 jenkins 유저 생성 명령 및 api 토큰 생성 명령 실행을 내리고, PIPE 를 통해 결과를 반환한다
             result = subprocess.Popen(['setjenkinsuser.sh %s' % (username)], shell=True , stdout=subprocess.PIPE)
@@ -66,10 +71,8 @@ def leadersingup(request):
             jenkinstoken = jenkinstoken.decode('ascii')
             # 해당 유저의 TOKEN TABLE 생성 ( 생성자 )
             token=Token()
-            # 회원 가입한 유저를 해당 TABLE 의 유저로 지정
-            token.user = User.objects.get(username=username)
             # 어떤 그룹의 토큰인지 설정
-            token.group = group_name
+            token.group = Groups.objects.get(id=bid)
             token.jenkins_access_token = jenkinstoken
             token.save()
 

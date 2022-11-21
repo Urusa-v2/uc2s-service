@@ -1,12 +1,34 @@
 <!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
 <body>
-repo name : {{ repo_name }}
-<br>
-repo uri : {{ repo_uri }}
+{% block contents %}
+<main id="main" class="main">
+    <h5 class="card-title">Your Cluster Descriptions <span>| Today</span></h5>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Repository Name</th>
+            <th scope="col">Repository URI</th>
+            <th scope="col">Created At</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for repo_name,repo_uri,created_at in dict_list %}
+        <tr>
+            <th scope="row"><a href="#">#</a></th>
+            <td>{{ repo_name }}</td>
+            <td>{{ repo_uri }}</td>
+            <td>{{ created_at }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</main>
+{% endblock %}
 </body>
 </html>

@@ -20,6 +20,15 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 secret_files = os.path.join(BASE_DIR, 'secret.json')
 
+
+STATIC_URL = '/static/'
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    STATIC_DIR,
+]
+
+
+
 with open(secret_files) as f:
     secrets = json.loads(f.read())
 
@@ -31,7 +40,7 @@ AUTH_USER_MODEL = 'accounts.User'
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = secrets['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 

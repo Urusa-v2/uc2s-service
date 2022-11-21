@@ -1,11 +1,29 @@
 <!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
 <body>
-clusters : {{ clusters }}
-<br>
+{% block contents %}
+<main id="main" class="main">
+    <h5 class="card-title">Your Cluster Lists <span>| Today</span></h5>
+    <table class="table table-borderless datatable">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+        </tr>
+        </thead>
+        {% for cluster in clusters %}
+        <tbody>
+        <tr>
+            <th scope="row"><a href="#">#</a></th>
+            <td><a href="#" class="text-primary">{{ cluster }}</a></td>
+        </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+</main><!-- End #main -->
+{% endblock %}
 </body>
 </html>

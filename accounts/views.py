@@ -118,7 +118,7 @@ def logout(request):
     auth_logout(request)
     return redirect('/')
 
-def signout(request):
+def withdraw(request):
     user=User.objects.get(id=request.user.id)
     user.delete()
     return redirect('/')

@@ -37,7 +37,7 @@ urlpatterns = [
     path('accounts/creategroup',accounts.views.createGroup),
     path('accounts/signup', accounts.views.singup),
     path('accounts/leadersingup/<int:bid>', accounts.views.leadersingup),
-    path('accounts/signout', accounts.views.signout),
+    path('accounts/withdraw', accounts.views.withdraw),
     path('accounts/login', accounts.views.login),
     path('accounts/logout', accounts.views.logout),
     path('board/startcicd',board.views.startcicd),

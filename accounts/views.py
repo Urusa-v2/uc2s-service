@@ -25,7 +25,7 @@ def chooseuser(request):
 def singup(request):
     if request.method == "GET":
         signupForm = SignupForm()
-        return render(request,'accounts/signup.html', {'signupForm':signupForm})
+        return render(request,'accounts/signup_leader.html', {'signupForm':signupForm})
     elif request.method == "POST":
         signupForm = SignupForm(request.POST)
         if signupForm.is_valid():
@@ -52,7 +52,7 @@ def createGroup(request):
 def leadersingup(request, bid):
     if request.method == "GET":
         signupForm = LeaderSignupForm()
-        return render(request,'accounts/signup.html', {'signupForm':LeaderSignupForm})
+        return render(request,'accounts/signup_leader.html', {'signupForm':LeaderSignupForm})
     elif request.method == "POST":
         signupForm = LeaderSignupForm(request.POST)
         if signupForm.is_valid():

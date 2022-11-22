@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.db import connection
 
-from api.ecr_inform import getRepoDescription
+from api.ecr_inform import getRepoDescription, getRepoName
 from api.eks_inform import getEksCluster, getEksDescription
 from board.models import Token
 from accounts.models import Groups
@@ -58,12 +58,22 @@ def startci(request):
         access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
         secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
         context = getRepoDescription(access_key_set, secret_key_set, region)
+        print(context)
         return render(request, 'board/startci.html',context)
+
+    # githubrepo_address, job_name, repository name
 
 
 def startcicd(request):
     if request.method == "GET":
-        return render(request, 'board/startcicd.html')
+        access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
+        secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
+
+        eks_list = getEksCluster(access_key_set, secret_key_set, region)
+        repo_list = getRepoName(access_key_set, secret_key_set, region)
+        context = {'eks_list':eks_list, 'repo_list':repo_list}
+        print(context)
+        return render(request, 'board/startcicd.html',context)
     if request.method == "POST":
         githubrepo_address = request.POST.get('githubrepo_address', None)
         if (not githubrepo_address):

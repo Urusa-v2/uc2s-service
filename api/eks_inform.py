@@ -15,9 +15,9 @@ def getEksCluster(access_key_set,secret_key_set,region):
         )
 
         response = client.list_clusters()
-        context = {'clusters': response['clusters']}
+        clusters = {'clusters': response['clusters']}
         print(response['clusters'])
-        return context
+        return clusters
 
 # 모든 클러스터에 대한 상세정보 조회
 def getEksDescription(access_key_set,secret_key_set,region):
@@ -54,7 +54,7 @@ def getEksDescription(access_key_set,secret_key_set,region):
 
         print(cluster_dict)
         dict_list = zip(cluster_dict['cluster_name'],cluster_dict['end_point'],cluster_dict['ip'],cluster_dict['createdAt'],cluster_dict['status'])
-        context = { 'dict_list' : dict_list}
+        clusters = { 'dict_list' : dict_list}
         print(dict_list)
-        return context
+        return clusters
 

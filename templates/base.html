@@ -75,7 +75,12 @@
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
                         <h6>{{ request.user.username}}</h6>
+                        {% if request.user.isleader %}
+                        <span>Leader</span>
+                        {% else %}
                         <span>Developer</span>
+                        {% endif %}
+
                     </li>
                     <li>
                         <hr class="dropdown-divider">

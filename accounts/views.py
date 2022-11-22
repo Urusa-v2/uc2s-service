@@ -26,7 +26,6 @@ def singup(request):
     if request.method == "GET":
         signupForm = SignupForm()
         grouplist=Groups.objects.all()
-
         return render(request,'accounts/signup_user.html', {'signupForm':signupForm, 'grouplist':grouplist})
     elif request.method == "POST":
         signupForm = SignupForm(request.POST)

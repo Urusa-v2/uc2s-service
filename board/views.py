@@ -81,11 +81,17 @@ def startcicd(request):
         print(context)
         return render(request, 'board/startcicd.html',context)
     if request.method == "POST":
-        # githubrepo_address, job_name, repository name, cluster name
 
         githubrepo_address = request.POST.get('githubrepo_address', None)
+        repo_name = request.POST.get('repository_name', None)
+        cluster_name = request.POST.get('cluster_name', None)
+        region = request.POST.get('region',None)
+
         if (not githubrepo_address):
             print(githubrepo_address)
+
+            # user 아이디 가져오기
+            userid = request.user.username
 
             # key 가져오기
             aws_access_key_id = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
@@ -93,8 +99,8 @@ def startcicd(request):
             github_access_token = Token.objects.filter(group=request.user.group).values('github_access_token')
 
             # shell 을 통해 jenkins 에 데이터 전달 및 실행
-            subprocess.Popen(['setjenkins.sh %s %s %s %s' % (
-            githubrepo_address, aws_access_key_id, aws_secret_access_key, github_access_token)], shell=True)
+            subprocess.Popen(['setjenkins.sh %s %s %s %s %s %s %s %s' % (
+            userid, repo_name, cluster_name,githubrepo_address, aws_access_key_id, aws_secret_access_key, github_access_token, region)], shell=True)
             context = {
                 'githubrepo_address': githubrepo_address
             }
@@ -102,7 +108,6 @@ def startcicd(request):
 
         else:
             return redirect('/')
-
 
 region = 'ap-northeast-2'
 

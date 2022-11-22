@@ -26,7 +26,9 @@
                     <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview
                     </button>
                 </li>
-
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Token</button>
+                </li>
             </ul>
             <div class="tab-content pt-2">
 
@@ -57,8 +59,49 @@
                     {% endif %}
 
                 </div>
+                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                    <!-- Profile Edit Form -->
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row mb-3">
+                            <label for="aak" class="col-md-4 col-lg-3 col-form-label">AWS Access Key ID</label>
+                            <div class="col-md-8 col-lg-9">
+                                {% for id in aak.all %}
+                                <input name="aws_access_key_id" type="text" class="form-control" id="aak"
+                                       value="{{ id.aws_access_key_id }}">
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="sak" class="col-md-4 col-lg-3 col-form-label">AWS Secret Access Key</label>
+                            <div class="col-md-8 col-lg-9">
+                                {% for key in asa.all %}
+                                <input name="aws_secret_access_key" type="text" class="form-control" id="sak"
+                                       value="{{ key.aws_secret_access_key }}">
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="gat" class="col-md-4 col-lg-3 col-form-label">Github Access Token</label>
+                            <div class="col-md-8 col-lg-9">
+                                {% for token in gat.all%}
+                                <input name="github_access_token" type="text" class="form-control" id="gat"
+                                       value="{{ token.github_access_token }}">
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form><!-- End Profile Edit Form -->
+
+                </div>
+
             </div>
         </div>
+    </div>
     </div>
 
 </main><!-- End #main -->

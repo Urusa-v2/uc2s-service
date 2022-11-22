@@ -131,7 +131,23 @@ def withdraw(request):
 
 @login_required(login_url='/accounts/login')
 def profile(request):
+    # user 정보 조회
+    user = User.objects.get(id=request.user.id)
+
+    # token 정보 조회
+    aws_access_key_id = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
+    aws_secret_access_key = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
+    github_access_token = Token.objects.filter(group=request.user.group).values('github_access_token')
+    context = {'userlist': user, 'aak': aws_access_key_id,
+               'asa': aws_secret_access_key,
+               'gat': github_access_token}
     if request.method=="GET":
-        user = User.objects.get(id=request.user.id)
-        context = {'userlist':user}
+        return render(request, 'accounts/profile.html', context)
+    elif request.method=="POST":
+        token = Token.objects.get(group=request.user.group)
+        token.aws_access_key_id = request.POST.get('aws_access_key_id',None)
+        token.aws_secret_access_key = request.POST.get('aws_secret_access_key',None)
+        token.github_access_token = request.POST.get('github_access_token',None)
+        token.save()
+
         return render(request,'accounts/profile.html',context)

@@ -40,6 +40,9 @@ urlpatterns = [
     path('accounts/withdraw', accounts.views.withdraw),
     path('accounts/login', accounts.views.login),
     path('accounts/logout', accounts.views.logout),
+
+    path('accounts/profile',accounts.views.profile),
+
     path('board/startcicd',board.views.startcicd),
 
 ]

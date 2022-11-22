@@ -124,3 +124,10 @@ def withdraw(request):
     user=User.objects.get(id=request.user.id)
     user.delete()
     return redirect('/')
+
+
+def profile(request):
+    if request.method=="GET":
+        user = User.objects.get(id=request.user.id)
+        context = {'userlist':user}
+        return render(request,'accounts/profile.html',context)

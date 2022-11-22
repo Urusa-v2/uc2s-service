@@ -14,9 +14,15 @@ import subprocess
 import boto3
 
 
-# Create your views here.
+# 로그인 후 메인 페이지
 def mainPage(request):
-    return render(request, 'board/main.html')
+    if request.user.is_authenticated:
+        access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
+        secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
+        context = getEksDescription(access_key_set, secret_key_set, region)
+        return render(request, 'board/main.html', context)
+    else:
+        return render(request, 'board/main_not.html')
 
 
 @login_required(login_url='/accounts/login')

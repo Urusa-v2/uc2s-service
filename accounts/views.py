@@ -18,7 +18,6 @@ import sys
 import subprocess
 
 # 회원가입시 일반 유저인지 리더인지 선택
-
 def chooseuser(request):
     return render(request,'accounts/setsignupuser.html')
 
@@ -63,8 +62,6 @@ def leadersingup(request, bid):
             user.isleader = True
             user.group = Groups.objects.get(id=bid)
             user.save()
-            # user id 가져오기
-            username = user.get_username()
 
             # 해당 SHELL 은 jenkins 유저 생성 명령 및 api 토큰 생성 명령 실행을 내리고, PIPE 를 통해 결과를 반환한다
             result = subprocess.Popen(['setjenkinsuser.sh %s' % (username)], shell=True , stdout=subprocess.PIPE)

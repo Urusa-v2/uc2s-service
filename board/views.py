@@ -6,6 +6,7 @@ from api.ecr_inform import getRepoDescription, getRepoName
 from api.eks_inform import getEksCluster, getEksDescription
 from board.models import Token
 from accounts.models import Groups
+from django.contrib.auth.decorators import login_required
 
 import os
 import sys
@@ -18,6 +19,7 @@ def mainPage(request):
     return render(request, 'board/main.html')
 
 
+@login_required(login_url='/accounts/login')
 def deleteAwsKeyId(request):
     token = Token.objects.get(group=request.user.group)
     token.aws_access_key_id = ''
@@ -25,6 +27,7 @@ def deleteAwsKeyId(request):
     return redirect('/')
 
 
+@login_required(login_url='/accounts/login')
 def deleteAwsSecretkey(request):
     token = Token.objects.get(group=request.user.group)
     token.aws_secret_access_key = ''
@@ -32,6 +35,7 @@ def deleteAwsSecretkey(request):
     return redirect('/')
 
 
+@login_required(login_url='/accounts/login')
 def deleteGitToken(request):
     token = Token.objects.get(group=request.user.group)
     token.github_access_token = ''
@@ -39,6 +43,7 @@ def deleteGitToken(request):
     return redirect('/')
 
 
+@login_required(login_url='/accounts/login')
 def getTokenPage(request):
     if request.method == "GET":
         aws_access_key_id = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
@@ -53,6 +58,7 @@ def getTokenPage(request):
         }
         return render(request, 'board/token_output.html',context)
 
+@login_required(login_url='/accounts/login')
 def startci(request):
     if request.method == "GET":
         access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
@@ -63,7 +69,7 @@ def startci(request):
 
     # githubrepo_address, job_name, repository name
 
-
+@login_required(login_url='/accounts/login')
 def startcicd(request):
     if request.method == "GET":
         access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
@@ -100,6 +106,7 @@ def startcicd(request):
 
 region = 'ap-northeast-2'
 
+@login_required(login_url='/accounts/login')
 def eks_list(request):
     ''' 클러스터 목록 조회'''
     access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
@@ -107,7 +114,7 @@ def eks_list(request):
     context = getEksCluster(access_key_set, secret_key_set, region)
     return render(request, 'board/inform_cluster_list.html', context)
 
-
+@login_required(login_url='/accounts/login')
 def eks_des(request):
     ''' 모든 클러스터에 대한 상세정보 조회'''
     access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
@@ -115,7 +122,7 @@ def eks_des(request):
     context = getEksDescription(access_key_set, secret_key_set, region)
     return render(request, 'board/inform_cluster_detail.html', context)
 
-
+@login_required(login_url='/accounts/login')
 def repo_des(request):
     ''' 모든 레포지토리에 대한 상세정보 조회'''
     access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')

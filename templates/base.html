@@ -133,7 +133,7 @@
             </a>
         </li><!-- End Dashboard Nav -->
 
-        {% if request.user.is_authenticated%}
+
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-journal-text"></i><span>Information</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -176,17 +176,17 @@
         </li><!-- End Components Nav -->
 
 
-        {% endif %}
+
         <li class="nav-heading">Pages</li>
 
-        {% if request.user.is_authenticated%}
+
         <li class="nav-item">
             <a class="nav-link collapsed" href="/accounts/profile">
                 <i class="bi bi-person"></i>
                 <span>Profile</span>
             </a>
         </li><!-- End Profile Page Nav -->
-        {% endif %}
+
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="/accounts/chooseuser">

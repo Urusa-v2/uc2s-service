@@ -6,6 +6,7 @@ from .models import Groups
 from board.models import Token
 from django.shortcuts import render
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, logout as auth_logout # 함수이름과 겹치지않기 위해 수정
@@ -115,17 +116,20 @@ def login(request):
         else:
             return redirect('/accounts/login')
 
+@login_required(login_url='/accounts/login')
 def logout(request):
     # 세션 정보를 지우는 것
     auth_logout(request)
     return redirect('/')
 
+@login_required(login_url='/accounts/login')
 def withdraw(request):
     user=User.objects.get(id=request.user.id)
     user.delete()
     return redirect('/')
 
 
+@login_required(login_url='/accounts/login')
 def profile(request):
     if request.method=="GET":
         user = User.objects.get(id=request.user.id)

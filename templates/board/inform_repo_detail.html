@@ -10,7 +10,6 @@
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">#</th>
             <th scope="col">Repository Name</th>
             <th scope="col">Repository URI</th>
             <th scope="col">Created At</th>
@@ -19,7 +18,6 @@
         <tbody>
         {% for repo_name,repo_uri,created_at in dict_list %}
         <tr>
-            <th scope="row"><a href="#">#</a></th>
             <td>{{ repo_name }}</td>
             <td>{{ repo_uri }}</td>
             <td>{{ created_at }}</td>

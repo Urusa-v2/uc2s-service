@@ -25,9 +25,12 @@ def chooseuser(request):
 def singup(request):
     if request.method == "GET":
         signupForm = SignupForm()
-        return render(request,'accounts/signup_leader.html', {'signupForm':signupForm})
+        grouplist=Groups.objects.all()
+
+        return render(request,'accounts/signup_user.html', {'signupForm':signupForm, 'grouplist':grouplist})
     elif request.method == "POST":
         signupForm = SignupForm(request.POST)
+        print(signupForm)
         if signupForm.is_valid():
             user = signupForm.save(commit=False)
             user.isleader=False

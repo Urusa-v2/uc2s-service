@@ -75,6 +75,8 @@ def startcicd(request):
         print(context)
         return render(request, 'board/startcicd.html',context)
     if request.method == "POST":
+        # githubrepo_address, job_name, repository name, cluster name
+
         githubrepo_address = request.POST.get('githubrepo_address', None)
         if (not githubrepo_address):
             print(githubrepo_address)

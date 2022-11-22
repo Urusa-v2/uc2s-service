@@ -5,7 +5,6 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
     <title>Dashboard - NiceAdmin Bootstrap Template</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
@@ -43,6 +42,7 @@
 <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
+        <a href="/">
         <img src="{% static 'assets/img/logo.png' %}">
         </a>
         <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -156,16 +156,37 @@
                 </li>
             </ul>
         </li><!-- End Forms Nav -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>Pipeline</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/board/startci">
+                        <i class="bi bi-circle"></i><span>CI Pipeline</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/board/startcicd">
+                        <i class="bi bi-circle"></i><span>CI+CD Pipeline</span>
+                    </a>
+                </li>
+
+            </ul>
+        </li><!-- End Components Nav -->
+
+
         {% endif %}
         <li class="nav-heading">Pages</li>
 
+        {% if request.user.is_authenticated%}
         <li class="nav-item">
             <a class="nav-link collapsed" href="/accounts/profile">
                 <i class="bi bi-person"></i>
                 <span>Profile</span>
             </a>
         </li><!-- End Profile Page Nav -->
-
+        {% endif %}
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="/accounts/chooseuser">

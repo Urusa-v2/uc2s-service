@@ -53,6 +53,13 @@ def getTokenPage(request):
         }
         return render(request, 'board/token_output.html',context)
 
+def startci(request):
+    if request.method == "GET":
+        access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
+        secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
+        context = getRepoDescription(access_key_set, secret_key_set, region)
+        return render(request, 'board/startci.html',context)
+
 
 def startcicd(request):
     if request.method == "GET":

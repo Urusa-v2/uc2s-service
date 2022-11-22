@@ -6,6 +6,7 @@ from .models import Groups
 from board.models import Token
 from django.shortcuts import render
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, logout as auth_logout # 함수이름과 겹치지않기 위해 수정
@@ -24,9 +25,11 @@ def chooseuser(request):
 def singup(request):
     if request.method == "GET":
         signupForm = SignupForm()
-        return render(request,'accounts/signup.html', {'signupForm':signupForm})
+        grouplist=Groups.objects.all()
+        return render(request,'accounts/signup_user.html', {'signupForm':signupForm, 'grouplist':grouplist})
     elif request.method == "POST":
         signupForm = SignupForm(request.POST)
+        print(signupForm)
         if signupForm.is_valid():
             user = signupForm.save(commit=False)
             user.isleader=False
@@ -51,7 +54,7 @@ def createGroup(request):
 def leadersingup(request, bid):
     if request.method == "GET":
         signupForm = LeaderSignupForm()
-        return render(request,'accounts/signup.html', {'signupForm':LeaderSignupForm})
+        return render(request,'accounts/signup_leader.html', {'signupForm':LeaderSignupForm})
     elif request.method == "POST":
         signupForm = LeaderSignupForm(request.POST)
         if signupForm.is_valid():
@@ -110,12 +113,22 @@ def login(request):
         else:
             return redirect('/accounts/login')
 
+@login_required(login_url='/accounts/login')
 def logout(request):
     # 세션 정보를 지우는 것
     auth_logout(request)
     return redirect('/')
 
-def signout(request):
+@login_required(login_url='/accounts/login')
+def withdraw(request):
     user=User.objects.get(id=request.user.id)
     user.delete()
     return redirect('/')
+
+
+@login_required(login_url='/accounts/login')
+def profile(request):
+    if request.method=="GET":
+        user = User.objects.get(id=request.user.id)
+        context = {'userlist':user}
+        return render(request,'accounts/profile.html',context)

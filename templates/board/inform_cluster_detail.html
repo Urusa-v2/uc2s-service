@@ -1,14 +1,38 @@
 <!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
 <body>
-cluster name : {{ cluster_name }}
-<br>
-end point : {{ end_point }}
-<br>
-ip : {{ ip }}
+{% block contents %}
+<main id="main" class="main">
+    <h5 class="card-title">Your Cluster Descriptions <span>| Today</span></h5>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">End-point</th>
+            <th scope="col">IP</th>
+            <th scope="col">Created At</th>
+
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for cluster_name,end_point,ip,created_at in dict_list %}
+        <tr>
+            <td>{{ cluster_name }}</td>
+            <td>{{ end_point }}</td>
+            <td>{{ ip }}</td>
+            <td>{{ created_at }}</td>
+
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+</main><!-- End #main -->
+{% endblock %}
 </body>
 </html>

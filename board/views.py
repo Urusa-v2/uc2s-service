@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.db import connection
+
+from api.ecr_inform import getRepoDescription, getRepoName
+from api.eks_inform import getEksCluster, getEksDescription
 from board.models import Token
 from accounts.models import Groups
+from django.contrib.auth.decorators import login_required
 
 import os
 import sys
@@ -15,6 +19,7 @@ def mainPage(request):
     return render(request, 'board/main.html')
 
 
+@login_required(login_url='/accounts/login')
 def deleteAwsKeyId(request):
     token = Token.objects.get(group=request.user.group)
     token.aws_access_key_id = ''
@@ -22,6 +27,7 @@ def deleteAwsKeyId(request):
     return redirect('/')
 
 
+@login_required(login_url='/accounts/login')
 def deleteAwsSecretkey(request):
     token = Token.objects.get(group=request.user.group)
     token.aws_secret_access_key = ''
@@ -29,6 +35,7 @@ def deleteAwsSecretkey(request):
     return redirect('/')
 
 
+@login_required(login_url='/accounts/login')
 def deleteGitToken(request):
     token = Token.objects.get(group=request.user.group)
     token.github_access_token = ''
@@ -36,6 +43,7 @@ def deleteGitToken(request):
     return redirect('/')
 
 
+@login_required(login_url='/accounts/login')
 def getTokenPage(request):
     if request.method == "GET":
         aws_access_key_id = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
@@ -50,14 +58,40 @@ def getTokenPage(request):
         }
         return render(request, 'board/token_output.html',context)
 
+@login_required(login_url='/accounts/login')
+def startci(request):
+    if request.method == "GET":
+        access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
+        secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
+        context = getRepoDescription(access_key_set, secret_key_set, region)
+        print(context)
+        return render(request, 'board/startci.html',context)
 
+    # githubrepo_address, job_name, repository name
+
+@login_required(login_url='/accounts/login')
 def startcicd(request):
     if request.method == "GET":
-        return render(request, 'board/startcicd.html')
+        access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
+        secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
+
+        eks_list = getEksCluster(access_key_set, secret_key_set, region)
+        repo_list = getRepoName(access_key_set, secret_key_set, region)
+        context = {'eks_list':eks_list, 'repo_list':repo_list}
+        print(context)
+        return render(request, 'board/startcicd.html',context)
     if request.method == "POST":
+
         githubrepo_address = request.POST.get('githubrepo_address', None)
+        repo_name = request.POST.get('repository_name', None)
+        cluster_name = request.POST.get('cluster_name', None)
+        region = request.POST.get('region',None)
+
         if (not githubrepo_address):
             print(githubrepo_address)
+
+            # user 아이디 가져오기
+            userid = request.user.username
 
             # key 가져오기
             aws_access_key_id = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
@@ -65,8 +99,8 @@ def startcicd(request):
             github_access_token = Token.objects.filter(group=request.user.group).values('github_access_token')
 
             # shell 을 통해 jenkins 에 데이터 전달 및 실행
-            subprocess.Popen(['setjenkins.sh %s %s %s %s' % (
-            githubrepo_address, aws_access_key_id, aws_secret_access_key, github_access_token)], shell=True)
+            subprocess.Popen(['setjenkins.sh %s %s %s %s %s %s %s %s' % (
+            userid, repo_name, cluster_name,githubrepo_address, aws_access_key_id, aws_secret_access_key, github_access_token, region)], shell=True)
             context = {
                 'githubrepo_address': githubrepo_address
             }
@@ -75,81 +109,28 @@ def startcicd(request):
         else:
             return redirect('/')
 
+region = 'ap-northeast-2'
 
+@login_required(login_url='/accounts/login')
 def eks_list(request):
     ''' 클러스터 목록 조회'''
     access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
     secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
-    for access_key_s, secret_key_s in zip(access_key_set, secret_key_set):
-        access_key = access_key_s['aws_access_key_id']
-        secret_key = secret_key_s['aws_secret_access_key']
-        region = 'ap-northeast-2'
+    context = getEksCluster(access_key_set, secret_key_set, region)
+    return render(request, 'board/inform_cluster_list.html', context)
 
-        client = boto3.client(
-            'eks',
-            aws_access_key_id=access_key,
-            aws_secret_access_key=secret_key,
-            region_name=region
-        )
-
-        response = client.list_clusters()
-        context = {'clusters': response['clusters']}
-        print(response['clusters'])
-        return render(request, 'board/inform_cluster_list.html', context)
-        # response = ''
-
-
+@login_required(login_url='/accounts/login')
 def eks_des(request):
     ''' 모든 클러스터에 대한 상세정보 조회'''
     access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
     secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
-    for access_key_s, secret_key_s in zip(access_key_set, secret_key_set):
-        access_key = access_key_s['aws_access_key_id']
-        secret_key = secret_key_s['aws_secret_access_key']
-        region = 'ap-northeast-2'
+    context = getEksDescription(access_key_set, secret_key_set, region)
+    return render(request, 'board/inform_cluster_detail.html', context)
 
-        client = boto3.client(
-            'eks',  # 서비스 이름
-            aws_access_key_id=access_key,
-            aws_secret_access_key=secret_key,
-            region_name=region
-        )
-
-        # cluster 이름 정보 불러오기
-        response_names = client.list_clusters()
-
-        # cluster 이름으로 해당 describe 정보 받기
-        for i in response_names['clusters']:
-            response = client.describe_cluster(
-                name=i
-            )
-
-        context = {'cluster_name': response['cluster']['name'],
-                   'end_point': response['cluster']['endpoint'],
-                   'ip': response['cluster']['kubernetesNetworkConfig']['serviceIpv4Cidr']}
-        print('#cluster name :', response['cluster']['name'], '#end point :', response['cluster']['endpoint'], '#IP :',
-              response['cluster']['kubernetesNetworkConfig']['serviceIpv4Cidr'])
-        return render(request, 'board/inform_cluster_detail.html', context)
-
-
+@login_required(login_url='/accounts/login')
 def repo_des(request):
     ''' 모든 레포지토리에 대한 상세정보 조회'''
     access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
     secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
-    for access_key_s, secret_key_s in zip(access_key_set, secret_key_set):
-        access_key = access_key_s['aws_access_key_id']
-        secret_key = secret_key_s['aws_secret_access_key']
-
-        region = 'ap-northeast-2'
-        client = boto3.client(
-            'ecr',  # 서비스 이름
-            aws_access_key_id=access_key,
-            aws_secret_access_key=secret_key,
-            region_name=region
-        )
-        response = client.describe_repositories()
-        context = {'repo_name': response['repositories'][0]['repositoryName'],
-                   'repo_uri': response['repositories'][0]['repositoryUri']}
-        print('#repo name :', response['repositories'][0]['repositoryName'], '#repo uri :',
-              response['repositories'][0]['repositoryUri'])
-        return render(request, 'board/inform_repo_detail.html', context)
+    context = getRepoDescription(access_key_set, secret_key_set, region)
+    return render(request, 'board/inform_repo_detail.html', context)

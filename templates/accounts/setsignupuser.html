@@ -1,14 +1,87 @@
 <!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>choose_leader_or_dev</title>
-</head>
 <body>
-<br>
-<a href="/accounts/signup">일반 유저 회원가입</a>
-<br>
-<a href="/accounts/creategroup">리더 회원가입</a>
-<br>
+{% block contents %}
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Who Are You?</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item">Sign Up</li>
+                <li class="breadcrumb-item active">Choose</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <div class="col-lg-6">
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Leader Account</h5>
+                <p>If you are the leader of your team, please choose this. You can create a group, and you have the authority to be a leader.</p>
+
+                <!-- Basic Modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal">
+                    Choose
+                </button>
+                <div class="modal fade" id="basicModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Leader</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                리더를 선택하시겠습니까?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" onclick="location.href='/accounts/creategroup'">Go</button>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- End Basic Modal-->
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Developer Account</h5>
+                <p>If you are the developer of your team, please choose this. You can choose your group.</p>
+
+                <!-- Basic Modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal2">
+                    Choose
+                </button>
+                <div class="modal fade" id="basicModal2" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Developer</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                개발자를 선택하시겠습니까?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                                </button>
+                                <button type="button" class="btn btn-primary" onclick="location.href='/accounts/signup'">Go</button>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- End Basic Modal-->
+            </div>
+        </div>
+    </div>
+</main><!-- End #main -->
+{% endblock %}
 </body>
 </html>

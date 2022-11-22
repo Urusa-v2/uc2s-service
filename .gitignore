@@ -1,3 +1,5 @@
 secret.json
 .idea
 /venv/
+*.pyc
+__pycache__

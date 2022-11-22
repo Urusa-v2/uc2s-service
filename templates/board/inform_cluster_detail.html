@@ -15,19 +15,19 @@
             <th scope="col">End-point</th>
             <th scope="col">IP</th>
             <th scope="col">Created At</th>
-            <th scope="col">Status</th>
+
         </tr>
         </thead>
 
         <tbody>
-        {% for cluster_name,end_point,ip,created_at, status in dict_list %}
+        {% for cluster_name,end_point,ip,created_at in dict_list %}
         <tr>
             <th scope="row"><a href="#">#</a></th>
             <td>{{ cluster_name }}</td>
             <td>{{ end_point }}</td>
             <td>{{ ip }}</td>
             <td>{{ created_at }}</td>
-            <td>{{ status }}</td>
+
         </tr>
         {% endfor %}
         </tbody>

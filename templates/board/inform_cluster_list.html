@@ -2,27 +2,28 @@
 {% extends 'base.html' %}
 {% load static %}
 <html lang="en">
-<head>
 <body>
 {% block contents %}
 <main id="main" class="main">
-    <h5 class="card-title">Your Cluster Lists <span>| Today</span></h5>
-    <table class="table table-borderless datatable">
+    <h5 class="card-title">Your Cluster List <span>| Today</span></h5>
+
+    <table class="table">
         <thead>
         <tr>
-            <th scope="col">#</th>
             <th scope="col">Name</th>
         </tr>
         </thead>
-        {% for cluster in clusters %}
+
         <tbody>
+         {% for cluster_name in clusters %}
         <tr>
-            <th scope="row"><a href="#">#</a></th>
-            <td><a href="#" class="text-primary">{{ cluster }}</a></td>
+            <td>{{ cluster_name }}</td>
         </tr>
-        </tbody>
         {% endfor %}
+        </tbody>
     </table>
+
+
 </main><!-- End #main -->
 {% endblock %}
 </body>

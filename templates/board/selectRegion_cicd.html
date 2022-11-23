@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+<html lang="en">
+<body>
+{% block contents %}
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Form Elements</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item">Pipeline</li>
+                <li class="breadcrumb-item active">CICD</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">General Form Elements</h5>
+
+            <!-- General Form Elements -->
+            <form method="post" >
+                {% csrf_token %}
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Region Select</label>
+                    <div class="col-sm-10">
+                        <select name="region" class="form-select" aria-label="Default select example" required="required">
+                    <option value="">Select your region</option>
+                    <option value="us-east-2">US East (Ohio)</option>
+                    <option value="us-east-1">US East (N. Virginia)</option>
+                    <option value="us-west-1">US West (N. California)</option>
+                    <option value="us-west-2">US West (Oregon)</option>
+                    <option value="af-south-1">Africa (Cape Town)</option>
+                    <option value="ap-east-1">Asia Pacific (Hong Kong)</option>
+                    <option value="ap-south-1">Asia Pacific (Mumbai)</option>
+                    <option value="ap-northeast-3">Asia Pacific (Osaka)</option>
+                    <option value="ap-northeast-2">Asia Pacific (Seoul)</option>
+                    <option value="ap-southeast-1">Asia Pacific (Singapore)</option>
+                    <option value="ap-southeast-2">Asia Pacific (Sydney)</option>
+                    <option value="ap-southeast-3">Asia Pacific (Jakarta)</option>
+                    <option value="ap-northeast-1">Asia Pacific (Tokyo)</option>
+                    <option value="ca-central-1">Canada (Central)</option>
+                    <option value="cn-north-1">China (Beijing)</option>
+                    <option value="cn-northwest-1">China (Ningxia)</option>
+                    <option value="eu-central-1">Europe (Frankfurt)</option>
+                    <option value="eu-west-1">Europe (Ireland)</option>
+                    <option value="eu-west-2">Europe (London)</option>
+                    <option value="eu-west-3">Europe (Paris)</option>
+                    <option value="eu-north-1">Europe (Stockholm)</option>
+                    <option value="eu-south-1">Europe (Milan)</option>
+                    <option value="me-south-1">Middle East (Bahrain)</option>
+                    <option value="me-central-1">Middle East (UAE)</option>
+                    <option value="sa-east-1">South America (São Paulo)</option>
+                    <option value="us-gov-west-1">AWS GovCloud (US-West)</option>
+                    <option value="us-gov-east-1">AWS GovCloud (US-East)</option>
+                </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Next</label>
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Next</button>
+                    </div>
+                </div>
+
+            </form><!-- End General Form Elements -->
+
+        </div>
+    </div>
+
+    </div>
+
+</main><!-- End #main -->
+{% endblock %}
+</body>
+</html>

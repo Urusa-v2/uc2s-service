@@ -44,7 +44,9 @@ urlpatterns = [
     path('accounts/profile',accounts.views.profile),
 
     path('board/selectRegionCi',board.views.selectRegionCI),
-    path('board/startcicd',board.views.startcicd),
+    path('board/selectRegionCiCd',board.views.selectRegionCICD),
+    path('board/startcicd/<str:rname>',board.views.startcicd),
     path('board/startci/<str:rname>',board.views.startci),
+    
 
 ]

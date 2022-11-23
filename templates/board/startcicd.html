@@ -11,7 +11,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Home</a></li>
                 <li class="breadcrumb-item">Pipeline</li>
-                <li class="breadcrumb-item active">CI</li>
+                <li class="breadcrumb-item active">CICD</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -24,27 +24,28 @@
             <form method="post">
                 {% csrf_token %}
                 <div class="row mb-3">
-                    <label for="inputGitAddress" class="col-sm-2 col-form-label">GIT Address</label>
+                    <label for="regiontext" class="col-sm-2 col-form-label">Region</label>
                     <div class="col-sm-10">
-                        <input type="text" name="githubrepo_address" class="form-control" id="inputGitAddress" required>
+                        <input type="text" name="region" value="{{ region }}" class="form-control" id="regiontext"
+                               readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="inputGitAddress" class="col-sm-2 col-form-label">클러스터 region 입력</label>
+                    <label for="inputGitAddress" class="col-sm-2 col-form-label">GIT Address</label>
                     <div class="col-sm-10">
-                        <input type="text" name="region" class="form-control" id="region" required>
+                        <input type="text" name="githubrepo_address" class="form-control" id="inputGitAddress" required>
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">ECR Repository</label>
                     <div class="col-sm-10">
-                        <select class="form-select" aria-label="Default select example">
-                            <option value="0" selected disabled> ECR Repository Select</option>
+                        <select name="repository_name" class="form-select" aria-label="Default select example" required="required">
+                            <option value="" selected disabled> ECR Repository Select</option>
                             {% for repo in repo_list.dict_list %}
-                                {% for repo_name in repo %}
+                            {% for repo_name in repo %}
                             <option value="{{ repo_name }}">{{ repo_name }}</option>
-                                {% endfor %}
+                            {% endfor %}
                             {% endfor %}
                         </select>
                     </div>
@@ -53,8 +54,8 @@
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">EKS Cluster</label>
                     <div class="col-sm-10">
-                        <select class="form-select" aria-label="Default select example">
-                            <option value="0" selected disabled> EKS Cluster Select</option>
+                        <select name="cluster_name" class="form-select" aria-label="Default select example" required="required">
+                            <option value="" selected disabled> EKS Cluster Select</option>
                             {% for cluster in eks_list.clusters %}
                             <option value="{{ cluster }}">{{ cluster }}</option>
                             {% endfor %}

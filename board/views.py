@@ -72,6 +72,13 @@ def selectRegionCI(request):
         region = request.POST.get('region')
         return redirect('/board/startci/'+str(region))
 
+def selectRegionCICD(request):
+    if request.method == "GET":
+        return render(request, 'board/selectRegion_cicd.html')
+    elif request.method == "POST":
+        region = request.POST.get('region')
+        return redirect('/board/startcicd/'+str(region))
+
 @login_required(login_url='/accounts/login')
 def startci(request,rname):
     if request.method == "GET":
@@ -95,23 +102,23 @@ def startci(request,rname):
     # githubrepo_address, job_name, repository name
 
 @login_required(login_url='/accounts/login')
-def startcicd(request):
+def startcicd(request,rname):
     if request.method == "GET":
+        region = rname
         access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
         secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
 
         eks_list = getEksCluster(access_key_set, secret_key_set, region)
         repo_list = getRepoName(access_key_set, secret_key_set, region)
-        context = {'eks_list':eks_list, 'repo_list':repo_list}
+        context = {'eks_list':eks_list, 'repo_list':repo_list, 'region':region}
         print(context)
         return render(request, 'board/startcicd.html',context)
     if request.method == "POST":
-
+        region = request.POST.get('region', None)
         githubrepo_address = request.POST.get('githubrepo_address', None)
         repo_name = request.POST.get('repository_name', None)
         cluster_name = request.POST.get('cluster_name', None)
-        region = request.POST.get('region',None)
-
+        print(region,githubrepo_address,repo_name,cluster_name)
         if (not githubrepo_address):
             print(githubrepo_address)
 

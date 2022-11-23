@@ -136,7 +136,7 @@ def startcicd(request,rname):
             context = {
                 'githubrepo_address': githubrepo_address
             }
-            return render(request, 'board/githubrepo_output.html', context)
+            return render(request, '/', context)
 
         else:
             return redirect('/')

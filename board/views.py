@@ -13,6 +13,7 @@ import sys
 import subprocess
 import boto3
 
+region = 'ap-northeast-2'
 
 # 로그인 후 메인 페이지
 def mainPage(request):
@@ -115,7 +116,7 @@ def startcicd(request):
         else:
             return redirect('/')
 
-region = 'ap-northeast-2'
+
 
 @login_required(login_url='/accounts/login')
 def eks_list(request):
@@ -129,17 +130,25 @@ def eks_list(request):
 @login_required(login_url='/accounts/login')
 def eks_des(request):
     region = request.GET.get('region')
-    print(region)
-    ''' 모든 클러스터에 대한 상세정보 조회'''
-    access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
-    secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
-    context = getEksDescription(access_key_set, secret_key_set, region)
+    print('region',region)
+    if region != None:
+        ''' 모든 클러스터에 대한 상세정보 조회'''
+        access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
+        secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
+        context = getEksDescription(access_key_set, secret_key_set, region)
+    else:
+        context = {}
     return render(request, 'board/inform_cluster_detail.html', context)
 
 @login_required(login_url='/accounts/login')
 def repo_des(request):
+    region = request.GET.get('region')
+    print(region)
     ''' 모든 레포지토리에 대한 상세정보 조회'''
-    access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
-    secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
-    context = getRepoDescription(access_key_set, secret_key_set, region)
+    if region != None:
+        access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
+        secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
+        context = getRepoDescription(access_key_set, secret_key_set, region)
+    else:
+        context = {}
     return render(request, 'board/inform_repo_detail.html', context)

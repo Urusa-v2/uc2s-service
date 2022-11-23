@@ -9,9 +9,9 @@
     <div class="row mb-3">
         <label class="col-sm-2 col-form-label">Select your Region :)</label>
         <div class="col-sm-10">
-            <form method="get">
-                <select name="region" class="form-select" aria-label="Default select example">
-                    <option selected>Open this select menu</option>
+            <form method="get" action="/board/getEksDes" id="region_mode">
+                <select onchange="this.form.submit()" name="region" class="form-select" aria-label="Default select example">
+                    <option value="0" selected>Open this select menu</option>
                     <option value="us-east-2">US East (Ohio)</option>
                     <option value="us-east-1">US East (N. Virginia)</option>
                     <option value="us-west-1">US West (N. California)</option>
@@ -39,21 +39,8 @@
                     <option value="sa-east-1">South America (São Paulo)</option>
                     <option value="us-gov-west-1">AWS GovCloud (US-West)</option>
                     <option value="us-gov-east-1">AWS GovCloud (US-East)</option>
-
-
                 </select>
             </form>
-            <script>
-                 $(document).ready(function() {
-        $( "select[name=region]" ).val( "{{ region_text }}" );
-        $('select[name=region]').change(function () {
-        console.log($('select[name=region]').val());
-        region = $('select[name=region]').val();
-        $('.form').submit();
-    });
-});
-
-            </script>
         </div>
     </div>
     <table class="table">

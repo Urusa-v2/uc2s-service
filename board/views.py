@@ -119,6 +119,7 @@ region = 'ap-northeast-2'
 
 @login_required(login_url='/accounts/login')
 def eks_list(request):
+
     ''' 클러스터 목록 조회'''
     access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
     secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
@@ -127,6 +128,8 @@ def eks_list(request):
 
 @login_required(login_url='/accounts/login')
 def eks_des(request):
+    region = request.GET.get('region')
+    print(region)
     ''' 모든 클러스터에 대한 상세정보 조회'''
     access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
     secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')

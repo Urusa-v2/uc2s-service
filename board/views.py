@@ -65,15 +65,33 @@ def getTokenPage(request):
         }
         return render(request, 'board/token_output.html',context)
 
-@login_required(login_url='/accounts/login')
-def startci(request):
+def selectRegionCI(request):
     if request.method == "GET":
+        return render(request, 'board/selectRegion_ci.html')
+    elif request.method == "POST":
+        region = request.POST.get('region')
+        return redirect('/board/startci/'+str(region))
+
+@login_required(login_url='/accounts/login')
+def startci(request,rname):
+    if request.method == "GET":
+        region = rname
         access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
         secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
-        context = getRepoDescription(access_key_set, secret_key_set, region)
+        repo_list = getRepoDescription(access_key_set, secret_key_set, region)
+        context = {'repo_list':repo_list,'region':region}
         print(context)
         return render(request, 'board/startci.html',context)
 
+    elif request.method == "POST":
+        region = request.POST.get('region', None)
+        githubrepo_address = request.POST.get('githubrepo_address', None)
+        repo_name = request.POST.get('repository_name', None)
+        print(region,githubrepo_address,repo_name)
+        context = {
+            'githubrepo_address': githubrepo_address
+        }
+        return render(request, 'board/githubrepo_output.html', context)
     # githubrepo_address, job_name, repository name
 
 @login_required(login_url='/accounts/login')
@@ -120,7 +138,6 @@ def startcicd(request):
 
 @login_required(login_url='/accounts/login')
 def eks_list(request):
-
     ''' 클러스터 목록 조회'''
     access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
     secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')

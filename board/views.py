@@ -98,7 +98,7 @@ def startci(request,rname):
         context = {
             'githubrepo_address': githubrepo_address
         }
-        return render(request, 'board/githubrepo_output.html', context)
+        return render(request, '/')
     # githubrepo_address, job_name, repository name
 
 @login_required(login_url='/accounts/login')

@@ -100,8 +100,8 @@
                                     <div class="col-12">
                                         <label class="col-sm-2 col-form-label">Group</label>
                                         <div class="col-sm-10">
-                                            <select class="form-select" aria-label="Default select example" name="group">
-                                                 <option value="0" selected disabled> Select Car model </option>
+                                            <select class="form-select" aria-label="Default select example" name="group" required="required">
+                                                 <option value="" selected disabled> Select Your Group </option>
                                                 {% for group in grouplist %}
                                                 <option value="{{ group.id }}">{{ group.name }}</option>
                                                 {% endfor%}

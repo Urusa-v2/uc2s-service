@@ -64,16 +64,16 @@ def leadersingup(request, bid):
             user.save()
 
             # 해당 SHELL 은 jenkins 유저 생성 명령 및 api 토큰 생성 명령 실행을 내리고, PIPE 를 통해 결과를 반환한다
-            result = subprocess.Popen(['setjenkinsuser.sh %s' % (username)], shell=True , stdout=subprocess.PIPE)
+            #result = subprocess.Popen(['setjenkinsuser.sh %s' % (username)], shell=True , stdout=subprocess.PIPE)
             # 실행 결과인 TOKEN 값만을 저장
-            jenkinstoken = result.communicate()[0]
+            #jenkinstoken = result.communicate()[0]
             # 반환 결과는 바이트 표현이 붙은 ascii 형식의 바이트 코드이다. 이를 복호화하여 유니코드 문자열로 변환한다
-            jenkinstoken = jenkinstoken.decode('ascii')
+            #jenkinstoken = jenkinstoken.decode('ascii')
             # 해당 유저의 TOKEN TABLE 생성 ( 생성자 )
             token=Token()
             # 어떤 그룹의 토큰인지 설정
             token.group = Groups.objects.get(id=bid)
-            token.jenkins_access_token = jenkinstoken
+            #token.jenkins_access_token = jenkinstoken
             token.save()
 
             # 토큰 입력 페이지로 넘어가면, 회원 가입한 유저의 그룹의 토큰을 입력받는다. 따라서 토큰의 id 를 넘겨서 해당 table 에 입력받게 한다

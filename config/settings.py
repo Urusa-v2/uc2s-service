@@ -20,6 +20,9 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 secret_files = os.path.join(BASE_DIR, 'secret.json')
 
+from django.contrib.messages import constants as messages_constants
+MESSAGE_LEVEL = messages_constants.INFO # 디폴트 설정
+MESSAGE_LEVEL = messages_constants.DEBUG
 
 STATIC_URL = '/static/'
 STATIC_DIR = os.path.join(BASE_DIR, 'static')

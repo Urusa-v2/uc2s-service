@@ -54,11 +54,19 @@
                                 <span class="d-none d-lg-block">UC2S</span>
                             </a>
                         </div><!-- End Logo -->
+                        {% if messages %}
+                        {% for messages in messages %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="bi bi-exclamation-octagon me-1"></i>
+                            {{ messages }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
 
                         <div class="card mb-3">
-
                             <div class="card-body">
-
                                 <div class="pt-4 pb-2">
                                     <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
                                     <p class="text-center small">Enter your personal details to create account</p>
@@ -100,8 +108,9 @@
                                     <div class="col-12">
                                         <label class="col-sm-2 col-form-label">Group</label>
                                         <div class="col-sm-10">
-                                            <select class="form-select" aria-label="Default select example" name="group" required="required">
-                                                 <option value="" selected disabled> Select Your Group </option>
+                                            <select class="form-select" aria-label="Default select example" name="group"
+                                                    required="required">
+                                                <option value="" selected disabled> Select Your Group</option>
                                                 {% for group in grouplist %}
                                                 <option value="{{ group.id }}">{{ group.name }}</option>
                                                 {% endfor%}

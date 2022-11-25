@@ -16,6 +16,7 @@ from django.db import connection
 import os
 import sys
 import subprocess
+from django.contrib import messages
 
 # 회원가입시 일반 유저인지 리더인지 선택
 def chooseuser(request):
@@ -35,7 +36,11 @@ def singup(request):
             user.isleader=False
             user.save()
             return redirect('/accounts/login')
-        return render(request, 'board/errorpage.html')
+        else:
+            messages.info(request, 'Account creation failed. Check your form! ')
+            signupForm = SignupForm()
+            grouplist = Groups.objects.all()
+            return render(request, 'accounts/signup_user.html', {'signupForm': signupForm, 'grouplist': grouplist})
 
 # 그룹 생성하기
 def createGroup(request):
@@ -48,7 +53,10 @@ def createGroup(request):
             group = groupform.save(commit=False)
             group.save()
             return redirect('/accounts/leadersingup/' + str(group.id))
-        return render(request, 'board/errorpage.html')
+        else:
+            messages.info(request, 'This group is already created. ')
+            groupform = groupForm()
+            return render(request, 'accounts/creategroup.html', {'groupForm': groupform})
 
 # 그룹장 회원가입
 def leadersingup(request, bid):
@@ -78,7 +86,10 @@ def leadersingup(request, bid):
 
             # 토큰 입력 페이지로 넘어가면, 회원 가입한 유저의 그룹의 토큰을 입력받는다. 따라서 토큰의 id 를 넘겨서 해당 table 에 입력받게 한다
             return redirect('/accounts/inputtoken/' + str(token.id))
-        return render(request, 'board/errorpage.html')
+        else:
+            messages.info(request, 'Account creation failed. Check your form! ')
+            signupForm = LeaderSignupForm()
+            return render(request, 'accounts/signup_leader.html', {'signupForm': LeaderSignupForm})
 
 # 그룹장의 토큰 입력 기능
 def TokenInputPage(request, bid):
@@ -98,7 +109,8 @@ def TokenInputPage(request, bid):
             }
             return render(request, 'accounts/token_confirm.html', context)
         else :
-            return render(request, 'board/errorpage.html')
+            signupForm = LeaderSignupForm()
+            return render(request, 'accounts/signup_leader.html', {'signupForm': LeaderSignupForm})
 
 # 로그인 입력 양식이 주어져야함
 def login(request):

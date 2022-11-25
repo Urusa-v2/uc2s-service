@@ -54,7 +54,16 @@
                                 <span class="d-none d-lg-block">UC2S</span>
                             </a>
                         </div><!-- End Logo -->
-
+                        {% if messages %}
+                        {% for messages in messages %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="bi bi-exclamation-octagon me-1"></i>
+                            {{ messages }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
                         <div class="card mb-3">
 
                             <div class="card-body">

@@ -1,4 +1,5 @@
 import boto3
+import botocore
 from collections import defaultdict
 # 모든 레포지토리에 대한 상세정보 조회
 def getRepoDescription(access_key_set,secret_key_set,region):
@@ -12,22 +13,29 @@ def getRepoDescription(access_key_set,secret_key_set,region):
             aws_secret_access_key=secret_key,
             region_name=region
         )
+        try:
+            response = client.describe_repositories()
+            check = response['repositories']
+            if not check:
+                alert = 'do not exist any repo'
+                repos = {'errmsg' : alert}
+                return repos
+            else:
+                repo_dict = defaultdict(list)
+                for res in response['repositories']:
+                    repo_dict['repo_name'].append(res['repositoryName'])
+                    repo_dict['repo_uri'].append(res['repositoryUri'])
+                    repo_dict['created_at'].append(res['createdAt'])
 
-        response = client.describe_repositories()
-        check = response['repositories']
-        if not check:
-            alert = 'do not exist any repo'
-            return alert
-        else:
-            repo_dict = defaultdict(list)
-            for res in response['repositories']:
-                repo_dict['repo_name'].append(res['repositoryName'])
-                repo_dict['repo_uri'].append(res['repositoryUri'])
-                repo_dict['created_at'].append(res['createdAt'])
+                dict_list = zip(repo_dict['repo_name'], repo_dict['repo_uri'], repo_dict['created_at'] )
+                repos = {'dict_list': dict_list}
+                print(repos)
+                return repos
 
-            dict_list = zip(repo_dict['repo_name'], repo_dict['repo_uri'], repo_dict['created_at'] )
-            repos = {'dict_list': dict_list}
-            print(repos)
+        except botocore.exceptions.ClientError as err:
+            errcode = err.response['Error']['Code']
+            errmsg = err.response['Error']['Message']
+            repos = { 'errmsg' : errmsg, 'errcode' : errcode }
             return repos
 
 def getRepoName(access_key_set,secret_key_set,region):

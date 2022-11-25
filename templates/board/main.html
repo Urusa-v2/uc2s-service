@@ -236,16 +236,24 @@
 
                                     <tbody>
 
+                                    {% if eks.dict_list != None %}
+                                        {% for cluster_name,end_point,ip,created_at in eks.dict_list %}
+                                        <tr>
+                                            <td>{{ cluster_name }}</td>
+                                            <td>{{ end_point }}</td>
+                                            <td>{{ ip }}</td>
+                                            <td>{{ created_at }}</td>
+                                        </tr>
 
-                                    {% for cluster_name,end_point,ip,created_at in eks.dict_list %}
-                                    <tr>
-                                        <td>{{ cluster_name }}</td>
-                                        <td>{{ end_point }}</td>
-                                        <td>{{ ip }}</td>
-                                        <td>{{ created_at }}</td>
-                                    </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td>{{ eks.errmsg }}</td>
+                                            <td>{{ eks.errcode }}</td>
+                                        </tr>
 
-                                    {% endfor %}
+                                    {% endif %}
+
                                     </tbody>
                                 </table>
 

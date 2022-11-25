@@ -1,4 +1,5 @@
 import boto3
+import botocore
 import yfinance as yf
 import json
 from datetime import datetime, timedelta
@@ -44,30 +45,34 @@ def getCost(access_key_set,secret_key_set,region):
             aws_secret_access_key=secret_key,
             region_name=region
         )
-
-        response = client.get_cost_and_usage(
-            TimePeriod={
-            'Start': past_day,                # yyyy-mm-ddThh:mm:ss
-            'End': to_day
-            },
-            Granularity='DAILY',                   #'DAILY'|'MONTHLY'|'HOURLY'
-            Metrics=['BlendedCost'],
-            Filter={
-                'Tags': {
-                    'Key': 'EKS_cluster',
-                    'Values': [
-                        '',
-                        ],
+        try:
+            response = client.get_cost_and_usage(
+                TimePeriod={
+                'Start': past_day,                # yyyy-mm-ddThh:mm:ss
+                'End': to_day
+                },
+                Granularity='DAILY',                   #'DAILY'|'MONTHLY'|'HOURLY'
+                Metrics=['BlendedCost'],
+                Filter={
+                    'Tags': {
+                        'Key': 'EKS_cluster',
+                        'Values': [
+                            '',
+                            ],
+                        }
                     }
-                }
-            )
+                )
 
-        for i in range(1, now.day):
-            float_won = response['ResultsByTime'][i - 1]['Total']['BlendedCost']['Amount']
-            won = round(float(float_won) * change, 2)
-            list_cos.append(int(won))
-            list_date.append(response['ResultsByTime'][i - 1]['TimePeriod']['Start'])
-        print(list_date)
-        result = {'dates' : list_date, 'costs' : list_cos}
+            for i in range(1, now.day):
+                float_won = response['ResultsByTime'][i - 1]['Total']['BlendedCost']['Amount']
+                won = round(float(float_won) * change, 2)
+                list_cos.append(int(won))
+                list_date.append(response['ResultsByTime'][i - 1]['TimePeriod']['Start'])
+            print(list_date)
+            result = {'dates' : list_date, 'costs' : list_cos}
 
-        return result
+            return result
+        except botocore.exceptions.ClientError as err:
+
+            result = { 'dates' : ['1001-01-01'], 'costs' : ['0','0','0'] }
+            return result

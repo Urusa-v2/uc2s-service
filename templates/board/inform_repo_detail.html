@@ -53,14 +53,22 @@
         </tr>
         </thead>
         <tbody>
-        {% for repo_name,repo_uri,created_at in dict_list %}
-        <tr>
-            <td>{{ repo_name }}</td>
-            <td>{{ repo_uri }}</td>
-            <td>{{ created_at }}</td>
-        </tr>
-        {% endfor %}
-        </tbody>
+        {% if dict_list != None %}
+            {% for repo_name,repo_uri,created_at in dict_list %}
+            <tr>
+                <td>{{ repo_name }}</td>
+                <td>{{ repo_uri }}</td>
+                <td>{{ created_at }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        {% else %}
+            <tr>
+                <td>{{ errmsg }}</td>
+                <td>{{ errcode }}</td>
+            </tr>
+
+        {% endif %}
     </table>
 
 </main>

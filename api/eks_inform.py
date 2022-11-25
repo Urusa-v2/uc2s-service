@@ -15,9 +15,15 @@ def getEksCluster(access_key_set,secret_key_set,region):
         )
 
         response = client.list_clusters()
-        clusters = {'clusters': response['clusters']}
-        print(response['clusters'])
-        return clusters
+        check = response['clusters']
+        if not check:
+            alert = ('Do not exist any cluster')
+            return alert
+        else:
+            clusters = {'clusters': response['clusters']}
+            print(response['clusters'])
+            return clusters
+
 
 # 모든 클러스터에 대한 상세정보 조회
 def getEksDescription(access_key_set,secret_key_set,region):
@@ -34,26 +40,31 @@ def getEksDescription(access_key_set,secret_key_set,region):
 
         # cluster 이름 정보 불러오기
         response_names = client.list_clusters()
+        check = response_names['clusters']
+        if not check:
+            alert = ('Do not exist any cluster')
+            return alert
+        else:
+            cluster_dict = defaultdict(list)
 
-
-        cluster_dict = defaultdict(list)
-
-        # cluster 이름으로 해당 describe 정보 받기
-        for i in response_names['clusters']:
-            response = client.describe_cluster(
-                name=i
-            )
-            cluster_dict['cluster_name'].append(response['cluster']['name'])
-            cluster_dict['end_point'].append(response['cluster']['endpoint'])
-            cluster_dict['ip'].append(response['cluster']['kubernetesNetworkConfig']['serviceIpv4Cidr'])
-            cluster_dict['createdAt'].append(response['cluster']['createdAt'])
-            print('#cluster name :', response['cluster']['name'], '#end point :', response['cluster']['endpoint'],
-                  '#IP :',
-                  response['cluster']['kubernetesNetworkConfig']['serviceIpv4Cidr'])
-
-        print(cluster_dict)
-        dict_list = zip(cluster_dict['cluster_name'],cluster_dict['end_point'],cluster_dict['ip'],cluster_dict['createdAt'])
-        clusters = { 'dict_list' : dict_list}
-        print(dict_list)
-        return clusters
+            # cluster 이름으로 해당 describe 정보 받기
+            for i in response_names['clusters']:
+                response = client.describe_cluster(
+                    name=i
+                )
+                cluster_dict['cluster_name'].append(response['cluster']['name'])
+                cluster_dict['end_point'].append(response['cluster']['endpoint'])
+                cluster_dict['ip'].append(response['cluster']['kubernetesNetworkConfig']['serviceIpv4Cidr'])
+                cluster_dict['createdAt'].append(response['cluster']['createdAt'])
+                '''
+                print('#cluster name :', response['cluster']['name'], '#end point :', response['cluster']['endpoint'],
+                      '#IP :',
+                      response['cluster']['kubernetesNetworkConfig']['serviceIpv4Cidr'])
+                '''
+            print(cluster_dict)
+            dict_list = zip(cluster_dict['cluster_name'], cluster_dict['end_point'], cluster_dict['ip'],
+                            cluster_dict['createdAt'])
+            clusters = {'dict_list': dict_list}
+            print('dic',dict_list)
+            return clusters
 

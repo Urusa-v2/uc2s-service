@@ -91,13 +91,19 @@ def startci(request,rname):
         print(context)
         return render(request, 'board/startci.html',context)
 
+
     elif request.method == "POST":
         region = request.POST.get('region', None)
         githubrepo_address = request.POST.get('githubrepo_address', None)
         repo_name = request.POST.get('repository_name', None)
-        print(region,githubrepo_address,repo_name)
+        # cicd 설정 변수
+        way = 'ci'
+        # ci 만 수행할 시 cluster name 은 필요 없으므로 None ( Null ) 로 설정한다. 이는 코드와 파일의 재활용성을 높이기 위해 동일한 shell 파일을 사용하기 위함이다
+        subprocess.Popen(['/root/django_project/uc2sweb/board/calljenkins.sh %s %s %s %s %s %s %s %s' % (
+            userid, repo_name, None, githubrepo_address, aws_access_key_id, aws_secret_access_key, region, way)],shell=True)
+        print(region, githubrepo_address, repo_name)
         context = {
-            'githubrepo_address': githubrepo_address
+             'githubrepo_address': githubrepo_address
         }
         return render(request, '/')
     # githubrepo_address, job_name, repository name
@@ -120,7 +126,7 @@ def startcicd(request,rname):
         repo_name = request.POST.get('repository_name', None)
         cluster_name = request.POST.get('cluster_name', None)
         print(region,githubrepo_address,repo_name,cluster_name)
-        if (not githubrepo_address):
+        if githubrepo_address is not None:
             print(githubrepo_address)
 
             # user 아이디 가져오기
@@ -129,11 +135,13 @@ def startcicd(request,rname):
             # key 가져오기
             aws_access_key_id = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
             aws_secret_access_key = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
-            github_access_token = Token.objects.filter(group=request.user.group).values('github_access_token')
 
+            # ci cd 설정 변수
+            way = 'cicd'
             # shell 을 통해 jenkins 에 데이터 전달 및 실행
-            subprocess.Popen(['setjenkins.sh %s %s %s %s %s %s %s %s' % (
-            userid, repo_name, cluster_name,githubrepo_address, aws_access_key_id, aws_secret_access_key, github_access_token, region)], shell=True)
+            subprocess.Popen(['/root/django_project/uc2sweb/board/calljenkins.sh %s %s %s %s %s %s %s %s' % (
+                userid, repo_name, cluster_name, githubrepo_address, aws_access_key_id, aws_secret_access_key, region,
+                way)], shell=True)
             context = {
                 'githubrepo_address': githubrepo_address
             }

@@ -42,10 +42,8 @@
                     <div class="col-sm-10">
                         <select name="repository_name" class="form-select" aria-label="Default select example" required="required">
                             <option value="" selected disabled> ECR Repository Select</option>
-                            {% for repo in repo_list.dict_list %}
-                            {% for repo_name in repo %}
-                            <option value="{{ repo_name }}">{{ repo_name }}</option>
-                            {% endfor %}
+                            {% for repo_name,repo_uri,created_at in repo_list.dict_list %}
+                            <option value="{{ repo_uri }}">{{ repo_name }}</option>
                             {% endfor %}
                         </select>
                     </div>

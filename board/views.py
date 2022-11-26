@@ -98,6 +98,8 @@ def startci(request,rname):
         repo_name = request.POST.get('repository_name', None)
         # cicd 설정 변수
         way = 'ci'
+        # user 아이디 가져오기
+        userid = request.user.username
         # ci 만 수행할 시 cluster name 은 필요 없으므로 None ( Null ) 로 설정한다. 이는 코드와 파일의 재활용성을 높이기 위해 동일한 shell 파일을 사용하기 위함이다
         subprocess.Popen(['/root/django_project/uc2sweb/board/calljenkins.sh %s %s %s %s %s %s %s %s' % (
             userid, repo_name, None, githubrepo_address, aws_access_key_id, aws_secret_access_key, region, way)],shell=True)

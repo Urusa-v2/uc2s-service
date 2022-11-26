@@ -70,6 +70,7 @@ def leadersingup(request, bid):
             user.isleader = True
             user.group = Groups.objects.get(id=bid)
             user.save()
+            username = user.get_username()
 
             # 해당 SHELL 은 jenkins 유저 생성 명령 및 api 토큰 생성 명령 실행을 내리고, PIPE 를 통해 결과를 반환한다
             result = subprocess.Popen(['/root/django_project/uc2sweb/accounts/setjenkinsuser.sh %s' % (username)],

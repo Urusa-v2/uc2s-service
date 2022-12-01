@@ -4,7 +4,7 @@ from django.db import connection
 
 from api.ecr_inform import getRepoDescription, getRepoName
 from api.eks_inform import getEksCluster, getEksDescription
-from api.cost_inform import getCost
+from api.cost_inform import getCost, ec2Cost
 from board.models import Token
 from accounts.models import Groups
 from django.contrib.auth.decorators import login_required
@@ -21,7 +21,7 @@ def mainPage(request):
     if request.user.is_authenticated:
         access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
         secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
-        context = { 'eks' : getEksDescription(access_key_set, secret_key_set, region), 'cost' : getCost(access_key_set,secret_key_set,region) }
+        context = { 'eks' : getEksDescription(access_key_set, secret_key_set, region), 'cost' : getCost(access_key_set,secret_key_set,region), 'ec2cost' : ec2Cost(access_key_set,secret_key_set,region) }
         return render(request, 'board/main.html', context)
     else:
         return render(request, 'board/main_not.html')

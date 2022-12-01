@@ -63,6 +63,8 @@ def getEksDescription(access_key_set,secret_key_set,region):
                     cluster_dict['end_point'].append(response['cluster']['endpoint'])
                     cluster_dict['ip'].append(response['cluster']['kubernetesNetworkConfig']['serviceIpv4Cidr'])
                     cluster_dict['createdAt'].append(response['cluster']['createdAt'])
+                    #cluster_dict['tag'].append(response['cluster']['tags'])
+
                     '''
                     print('#cluster name :', response['cluster']['name'], '#end point :', response['cluster']['endpoint'],
                           '#IP :',
@@ -70,7 +72,7 @@ def getEksDescription(access_key_set,secret_key_set,region):
                     '''
                 print(cluster_dict)
                 dict_list = zip(cluster_dict['cluster_name'], cluster_dict['end_point'], cluster_dict['ip'],
-                                cluster_dict['createdAt'])
+                                cluster_dict['createdAt'])#,cluster_dict['tag'])
                 clusters = {'dict_list': dict_list}
                 print('dic',dict_list)
                 return clusters

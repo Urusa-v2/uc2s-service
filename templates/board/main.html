@@ -47,7 +47,9 @@
                                         <i class="bi bi-cart"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>145</h6>
+
+                                        <h5>EKS : {{ cost.sum_cos }}₩</h5>
+                                        <h5>Worker : {{ ec2cost.ec2_sum }}₩</h5>
                                         <span class="text-success small pt-1 fw-bold">12%</span> <span
                                             class="text-muted small pt-2 ps-1">increase</span>
 
@@ -162,11 +164,8 @@
                           name: 'EKS',
                           data: {{ cost.costs }},
                         }, {
-                          name: 'Revenue',
-                          data: [11, 32, 45, 32, 34, 52, 41]
-                        }, {
-                          name: 'Customers',
-                          data: [15, 11, 32, 18, 9, 24, 11]
+                          name: 'worknode',
+                          data: {{ ec2cost.ec2_costs }}
                         }],
                         chart: {
                           height: 350,

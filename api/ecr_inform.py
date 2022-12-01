@@ -50,18 +50,24 @@ def getRepoName(access_key_set,secret_key_set,region):
             region_name=region
         )
 
-        response = client.describe_repositories()
-        check = response['repositories']
+        try:
+            response = client.describe_repositories()
+            check = response['repositories']
 
-        if not check:
-            alert = 'do not exist any repo'
-            return alert
-        else:
-            repo_dict = defaultdict(list)
-            for res in response['repositories']:
-                repo_dict['repo_name'].append(res['repositoryName'])
+            if not check:
+                alert = 'do not exist any repo'
+                return alert
+            else:
+                repo_dict = defaultdict(list)
+                for res in response['repositories']:
+                    repo_dict['repo_name'].append(res['repositoryName'])
 
-            dict_list = zip(repo_dict['repo_name'])
-            repos = {'dict_list': dict_list}
-            print(repos)
+                dict_list = zip(repo_dict['repo_name'])
+                repos = {'dict_list': dict_list}
+                print(repos)
+                return repos
+        except botocore.exceptions.ClientError as err:
+            errcode = err.response['Error']['Code']
+            errmsg = err.response['Error']['Message']
+            repos = { 'errmsg' : errmsg, 'errcode' : errcode }
             return repos

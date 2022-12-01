@@ -111,7 +111,7 @@ def startci(request,rname):
           userid = request.user.username
           # ci 만 수행할 시 cluster name 은 필요 없으므로 None ( Null ) 로 설정한다. 이는 코드와 파일의 재활용성을 높이기 위해 동일한 shell 파일을 사용하기 위함이다
           subprocess.Popen(['/var/www/django/board/calljenkins.sh %s %s %s %s %s %s %s %s' % (userid, repo_name, None, githubrepo_address, aws_access_key_id, aws_secret_access_key, region, way)],shell=True)
-          return redirect('/')
+          return render(request, 'board/successpage.html')
         else:
           return redirect('/')  
 
@@ -145,7 +145,7 @@ def startcicd(request,rname):
             way = 'cicd'
             # shell 을 통해 jenkins 에 데이터 전달 및 실행
             subprocess.Popen(['/var/www/django/board/calljenkins.sh %s %s %s %s %s %s %s %s' % (userid, repo_name, cluster_name, githubrepo_address, aws_access_key_id, aws_secret_access_key, region,way)], shell=True)
-            return redirect('/')
+            return render(request, 'board/successpage.html')
 
         else:
             return redirect('/')

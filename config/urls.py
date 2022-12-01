@@ -41,12 +41,14 @@ urlpatterns = [
     path('accounts/login', accounts.views.login),
     path('accounts/logout', accounts.views.logout),
 
+
     path('accounts/profile',accounts.views.profile),
 
     path('board/selectRegionCi',board.views.selectRegionCI),
     path('board/selectRegionCiCd',board.views.selectRegionCICD),
     path('board/startcicd/<str:rname>',board.views.startcicd),
     path('board/startci/<str:rname>',board.views.startci),
+    path('board/contact',board.views.contact),
     
 
 ]

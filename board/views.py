@@ -185,3 +185,6 @@ def repo_des(request):
     else:
         context = {}
     return render(request, 'board/inform_repo_detail.html', context)
+
+def contact(request):
+    return render(request, 'board/contact.html')

@@ -170,18 +170,16 @@
             </ul>
         </li><!-- End Components Nav -->
 
-
-
         <li class="nav-heading">Pages</li>
 
-
+        {% if request.user.is_authenticated%}
         <li class="nav-item">
             <a class="nav-link collapsed" href="/accounts/profile">
                 <i class="bi bi-person"></i>
                 <span>Profile</span>
             </a>
         </li><!-- End Profile Page Nav -->
-
+        {% else %}
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="/accounts/chooseuser">
@@ -189,8 +187,6 @@
                 <span>Sign Up</span>
             </a>
         </li><!-- End Sign Up Page Nav -->
-
-
         <li class="nav-item">
             <a class="nav-link collapsed" href="/accounts/login">
                 <i class="bi bi-box-arrow-in-right"></i>
@@ -198,6 +194,7 @@
             </a>
         </li><!-- End Login Page Nav -->
 
+        {% endif %}
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="pages-contact.html">

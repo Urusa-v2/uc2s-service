@@ -125,6 +125,7 @@ def login(request):
             auth_login(request, loginForm.get_user())
             return redirect('/')
         else:
+            messages.info(request, 'Login failed. Check your form! ')
             return redirect('/accounts/login')
 
 @login_required(login_url='/accounts/login')

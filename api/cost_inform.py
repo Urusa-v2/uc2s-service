@@ -1,11 +1,11 @@
 import boto3
 import botocore
-import yfinance as yf
+import urllib.request as req
+import re
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
+from bs4 import BeautifulSoup
 
-
-#pip install yfinance 필수!
 
 #요금 조회
 def getCost(access_key_set,secret_key_set,region):
@@ -15,7 +15,7 @@ def getCost(access_key_set,secret_key_set,region):
 
         sum_cos = 0
 
-        now = datetime.now()
+
         '''
         past = []
         past.append(str(now.year))
@@ -33,9 +33,12 @@ def getCost(access_key_set,secret_key_set,region):
         list_cos = []
         list_date = []
 
-        data = yf.download(['USDKRW=X'], start=past_day, end=yester_day)
-
-        change = data['Close'][-1]
+        # 환율 받기
+        url = "https://finance.naver.com/marketindex/"
+        res = req.urlopen(url)
+        soup = BeautifulSoup(res, "html.parser")
+        rate = str(soup.select_one("div.head_info > span.value").string)
+        f_rate = re.sub(",", "", rate)
 
         client = boto3.client(
             'ce',
@@ -53,7 +56,7 @@ def getCost(access_key_set,secret_key_set,region):
                 Metrics=['BlendedCost'],
                 Filter={
                     'Tags': {
-                        'Key': 'EKS_cluster',
+                        'Key': 'eks',
                         'Values': [
                             '',
                             ],
@@ -63,7 +66,7 @@ def getCost(access_key_set,secret_key_set,region):
 
             for i in response['ResultsByTime']:
                 float_won = i['Total']['BlendedCost']['Amount']
-                won = round(float(float_won) * change, 2)
+                won = round(float(float_won) * float(f_rate), 2)
                 list_cos.append(int(won))
                 list_date.append(i['TimePeriod']['Start'])
 
@@ -88,14 +91,7 @@ def ec2Cost(access_key_set,secret_key_set,region):
         secret_key = secret_key_s['aws_secret_access_key']
 
         ec2_sum = 0
-        now = datetime.now()
-        '''
-        past = []
-        past.append(str(now.year))
-        past.append(str(now.month))
-        past.append(str('01'))
-        past_day = '-'.join(past)
-        '''
+
 
         past_day = str(date.today() - relativedelta(months=1))
 
@@ -103,12 +99,14 @@ def ec2Cost(access_key_set,secret_key_set,region):
 
         yester_day = str(date.today() - timedelta(1))
 
-        list_cos = []
-        list_date = []
+        lists_cos = []
 
-        data = yf.download(['USDKRW=X'], start=past_day, end=yester_day)
-
-        change = data['Close'][-1]
+        # 환율 받기
+        url = "https://finance.naver.com/marketindex/"
+        res = req.urlopen(url)
+        soup = BeautifulSoup(res, "html.parser")
+        rate = str(soup.select_one("div.head_info > span.value").string)
+        f_rate = re.sub(",", "", rate)
 
         client = boto3.client(
             'ce',
@@ -126,7 +124,7 @@ def ec2Cost(access_key_set,secret_key_set,region):
                 Metrics=['BlendedCost'],
                 Filter={
                     'Tags': {
-                        'Key': 'eks:cluster-name',
+                        'Key': 'ec2',
                         'Values': [
                             '',
                             ],
@@ -136,13 +134,13 @@ def ec2Cost(access_key_set,secret_key_set,region):
 
             for i in response['ResultsByTime']:
                 float_won = i['Total']['BlendedCost']['Amount']
-                won = round(float(float_won) * change, 2)
-                list_cos.append(int(won))
+                won = round(float(float_won) * float(f_rate), 2)
+                lists_cos.append(int(won))
 
-            for i in range(0,len(list_cos)):
+            for i in range(0,len(lists_cos)):
 
-                ec2_sum =+ list_cos[i]
-            result = {'ec2_costs' : list_cos, 'ec2_sum' : ec2_sum}
+                ec2_sum = ec2_sum + lists_cos[i]
+            result = {'ec2_costs' : lists_cos, 'ec2_sum' : ec2_sum}
 
             return result
         except botocore.exceptions.ClientError as err:

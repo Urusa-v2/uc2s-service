@@ -70,6 +70,7 @@ def selectRegionCI(request):
     if request.method == "GET":
         return render(request, 'board/selectRegion_ci.html')
     elif request.method == "POST":
+        # 선택한 region 을 url 에 담아서 보내준다
         region = request.POST.get('region')
         return redirect('/board/startci/'+str(region))
 
@@ -77,15 +78,19 @@ def selectRegionCICD(request):
     if request.method == "GET":
         return render(request, 'board/selectRegion_cicd.html')
     elif request.method == "POST":
+        # 선택한 region 을 url 에 담아서 보내준다
         region = request.POST.get('region')
         return redirect('/board/startcicd/'+str(region))
 
 @login_required(login_url='/accounts/login')
-def startci(request,rname):
+def startci(request,rname): # rname 은 리전 선택창에서 선택한 리전을 url 에 담아서 보내주므로, 이를 받아오는 변수이다
     if request.method == "GET":
+        #selectRegion 에서 선택한 region 데이터를 region 변수에 설정한다
         region = rname
+        # 리전의 ecr 리스트를 조회하기 위하여 AWS KEY 를 가져온다
         access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
         secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
+        # ecr repo list 를 조회하여 보내서 사용자가 repo 를 선택하게 한다
         repo_list = getRepoDescription(access_key_set, secret_key_set, region)
         context = {'repo_list':repo_list,'region':region}
         print(context)
@@ -96,11 +101,13 @@ def startci(request,rname):
 
         githubrepo_address = request.POST.get('githubrepo_address', None)
 
-        if githubrepo_address is not None:
+        if githubrepo_address is not None: # github repo 주소를 잘 작성했을 경우
           region = request.POST.get('region', None)
           repo_name = request.POST.get('repository_name', None)
         
           # 키 가져오기
+          # key 가져오기. filter 로 가져오면 list 형태로 반환되므로,
+          # Model 객체를 가져와서 해당 객체의 속성 값을 통해 AWS Key 값을 가져온다
           token = Token.objects.get(group=request.user.group)
           aws_access_key_id = token.aws_access_key_id
           aws_secret_access_key = token.aws_secret_access_key
@@ -110,7 +117,7 @@ def startci(request,rname):
           # user 아이디 가져오기
           userid = request.user.username
           # ci 만 수행할 시 cluster name 은 필요 없으므로 None ( Null ) 로 설정한다. 이는 코드와 파일의 재활용성을 높이기 위해 동일한 shell 파일을 사용하기 위함이다
-          # pipe 를 통해 build 성공 여부를 가져온다
+          # 표준 입출력에 대해 Pipe 를 열어서 build 성공 여부를 가져온다
           result = subprocess.Popen(['/var/www/django/board/calljenkins.sh %s %s %s %s %s %s %s %s' % (userid, repo_name, None, githubrepo_address, aws_access_key_id, aws_secret_access_key, region, way)],shell=True, stdout=subprocess.PIPE)
           if result == "Finished: SUCCESS":  # build 성공창 출력
               return render(request, 'board/successpage.html')
@@ -120,12 +127,13 @@ def startci(request,rname):
           return redirect('/')  
 
 @login_required(login_url='/accounts/login')
-def startcicd(request,rname):
+def startcicd(request,rname): # rname 은 리전 선택창에서 선택한 리전을 url 에 담아서 보내주므로, 이를 받아오는 변수이다
     if request.method == "GET":
+        # selectRegion 에서 선택한 region 데이터를 region 변수에 설정한다
         region = rname
         access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
         secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
-
+        # eks cluster list 와 repo list 를 담아서 보내주어 사용자가 이를 보고 선택할 수 있게 한다
         eks_list = getEksCluster(access_key_set, secret_key_set, region)
         repo_list = getRepoDescription(access_key_set, secret_key_set, region)
         context = {'eks_list':eks_list, 'repo_list':repo_list, 'region':region}
@@ -140,7 +148,8 @@ def startcicd(request,rname):
             # user 아이디 가져오기
             userid = request.user.username
 
-            # key 가져오기
+            # key 가져오기. filter 로 가져오면 list 형태로 반환되므로,
+            # Model 객체를 가져와서 해당 객체의 속성 값을 통해 AWS Key 값을 가져온다
             token = Token.objects.get(group=request.user.group)
             aws_access_key_id = token.aws_access_key_id
             aws_secret_access_key = token.aws_secret_access_key
@@ -148,7 +157,7 @@ def startcicd(request,rname):
             # ci cd 설정 변수
             way = 'cicd'
             # shell 을 통해 jenkins 에 데이터 전달 및 실행
-            # pipe 를 통해 build 성공 여부를 가져온다
+            # 표준 입출력에 대해 Pipe 를 열어서 build 성공 여부를 가져온다
             result = subprocess.Popen(['/var/www/django/board/calljenkins.sh %s %s %s %s %s %s %s %s' % (userid, repo_name, cluster_name, githubrepo_address, aws_access_key_id, aws_secret_access_key, region,way)], shell=True, stdout=subprocess.PIPE)
             if result == "Finished: SUCCESS": #build 성공창 출력
                 return render(request, 'board/successpage.html')

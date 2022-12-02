@@ -115,7 +115,7 @@ def startci(request,rname):
           if result == "Finished: SUCCESS":  # build 성공창 출력
               return render(request, 'board/successpage.html')
           else:  # build 실패창 출력
-              return render(request, 'board/successpage.html')
+              return render(request, 'board/failurepage.html')
         else:
           return redirect('/')  
 

@@ -113,7 +113,7 @@ def startci(request,rname): # rname 은 리전 선택창에서 선택한 리전�
           result_job = result.communicate()[0]
           # 반환 결과는 바이트 표현이 붙은 ascii 형식의 바이트 코드이다. 이를 복호화하여 유니코드 문자열로 변환한다
           result_job = result_job.decode('ascii')
-          if result_job == "Finished: SUCCESS":  # build 성공창 출력
+          if "SUCCESS" in result_job:  # build 성공창 출력
               return render(request, 'board/successpage.html')
           else:  # build 실패창 출력
               return render(request, 'board/failurepage.html')
@@ -157,7 +157,7 @@ def startcicd(request,rname): # rname 은 리전 선택창에서 선택한 리�
             result_job = result.communicate()[0]
             # 반환 결과는 바이트 표현이 붙은 ascii 형식의 바이트 코드이다. 이를 복호화하여 유니코드 문자열로 변환한다
             result_job = result_job.decode('ascii')
-            if result_job == "Finished: SUCCESS": #build 성공창 출력
+            if "SUCCESS" in result_job: #build 성공창 출력
                 return render(request, 'board/successpage.html')
             else: # build 실패창 출력
                 return render(request, 'board/failurepage.html')

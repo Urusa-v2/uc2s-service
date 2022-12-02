@@ -68,13 +68,15 @@ def leadersingup(request, bid):
         if signupForm.is_valid():
             user = signupForm.save(commit=False)
             user.isleader = True
-            user.group = Groups.objects.get(id=bid)
+            group = Groups.objects.get(id=bid)
+            user.group = group
             user.save()
-            username = user.get_username()
+            groupname = group.name()
 
             # 해당 SHELL 은 jenkins 유저 생성 명령 및 api 토큰 생성 명령 실행을 내리고, PIPE 를 통해 결과를 반환한다
-            result = subprocess.Popen(['/var/www/django/accounts/setjenkinsuser.sh %s' % (username)],
+            result = subprocess.Popen(['/var/www/django/accounts/setjenkinsuser.sh %s' % (groupname)],
                                       shell=True, stdout=subprocess.PIPE)
+            
             # 실행 결과인 TOKEN 값만을 저장
             jenkinstoken = result.communicate()[0]
             # 반환 결과는 바이트 표현이 붙은 ascii 형식의 바이트 코드이다. 이를 복호화하여 유니코드 문자열로 변환한다

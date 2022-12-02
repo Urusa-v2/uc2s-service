@@ -188,3 +188,6 @@ def repo_des(request):
 
 def contact(request):
     return render(request, 'board/contact.html')
+
+def terms_and_conditions(request):
+    return render(request, 'board/terms_and_conditions.html')

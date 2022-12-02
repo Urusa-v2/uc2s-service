@@ -68,24 +68,65 @@
                                     {% csrf_token %}
                                     <div class="col-12">
                                         <label for="aak" class="form-label"> AWS ACCESS KEY ID </label>
-                                        <input type="text" name="aws_access_key_id" class="form-control" id="aak" required>
+                                        <input type="text" name="aws_access_key_id" class="form-control" id="aak"
+                                               required>
                                         <div class="invalid-feedback">Please, enter your AWS ACCESS KEY ID!</div>
                                     </div>
 
-                                  <div class="col-12">
+                                    <div class="col-12">
                                         <label for="ask" class="form-label">AWS Secret Access Key</label>
-                                        <input type="text" name="aws_secret_access_key" class="form-control" id="ask" required>
+                                        <input type="text" name="aws_secret_access_key" class="form-control" id="ask"
+                                               required>
                                         <div class="invalid-feedback">Please, enter your AWS Secret Access Key!</div>
                                     </div>
-                                  <div class="col-12">
+                                    <div class="col-12">
                                         <label for="gct" class="form-label">Github Access Token</label>
-                                        <input type="text" name="github_access_token" class="form-control" id="gct" required>
+                                        <input type="text" name="github_access_token" class="form-control" id="gct"
+                                               required>
                                         <div class="invalid-feedback">Please, enter your Github Access Token!</div>
                                     </div>
+
+                                    <!-- Basic Modal -->
+                                    <a href="#basicModal" data-bs-toggle="modal" data-bs-target="#basicModal">
+                                        View IAM Roles
+                                    </a>
+                                    <div class="modal fade" id="basicModal" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">IAM Roles</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <img src="{% static 'assets/img/example-role.png' %}"
+                                                         style="width:450px;height:300px">
+                                                    <br>
+                                                    Please register the key according to the 4 rules below.
+                                                    <br>
+                                                    <br>
+                                                    - AmazonEKSClusterPolicy
+                                                    <br>
+                                                    - AmazonEKSWorkerNodePolicy
+                                                    <br>
+                                                    - AmazonEC2ContainerRegistryReadOnly
+                                                    <br>
+                                                    - AmazonEKS_CNI_Policy
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- End Basic Modal-->
+
 
                                     <div class="col-12">
                                         <button class="btn btn-primary w-100" type="submit">Register</button>
                                     </div>
+
                                 </form>
 
                             </div>

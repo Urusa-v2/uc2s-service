@@ -96,6 +96,41 @@
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary">Save Changes</button>
                         </div>
+                        <!-- Basic Modal -->
+                                    <a href="#basicModal" data-bs-toggle="modal" data-bs-target="#basicModal">
+                                        View IAM Roles
+                                    </a>
+                                    <div class="modal fade" id="basicModal" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">IAM Roles</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <img src="{% static 'assets/img/example-role.png' %}"
+                                                         style="width:450px;height:300px">
+                                                    <br>
+                                                    Please register the key according to the 4 rules below.
+                                                    <br>
+                                                    <br>
+                                                    - AmazonEKSClusterPolicy
+                                                    <br>
+                                                    - AmazonEKSWorkerNodePolicy
+                                                    <br>
+                                                    - AmazonEC2ContainerRegistryReadOnly
+                                                    <br>
+                                                    - AmazonEKS_CNI_Policy
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- End Basic Modal-->
                     </form><!-- End Profile Edit Form -->
 
                 </div>

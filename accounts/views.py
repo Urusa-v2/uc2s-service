@@ -86,7 +86,7 @@ def leadersingup(request, bid):
             # 해당 유저의 TOKEN TABLE 생성 ( 생성자 )
             token = Token()
             # 어떤 그룹의 토큰인지 설정
-            token.group = Groups.objects.get(id=bid)
+            token.group = group
             token.jenkins_access_token = jenkinstoken
             token.save()
 

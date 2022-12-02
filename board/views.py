@@ -104,8 +104,10 @@ def startci(request,rname): # rname 은 리전 선택창에서 선택한 리전�
 
           # cicd 설정 변수
           way = 'ci'
-          # user 아이디 가져오기
-          userid = request.user.username
+          # group 아이디 가져오기
+          group = request.user.group
+          userid = group.name
+          
           # ci 만 수행할 시 cluster name 은 필요 없으므로 None ( Null ) 로 설정한다. 이는 코드와 파일의 재활용성을 높이기 위해 동일한 shell 파일을 사용하기 위함이다
           # 표준 입출력에 대해 Pipe 를 열어서 build 성공 여부를 가져온다
           result = subprocess.Popen(['/var/www/django/board/calljenkins.sh %s %s %s %s %s %s %s %s' % (userid, repo_name, None, githubrepo_address, aws_access_key_id, aws_secret_access_key, region, way)],shell=True, stdout=subprocess.PIPE)
@@ -135,8 +137,9 @@ def startcicd(request,rname): # rname 은 리전 선택창에서 선택한 리�
         cluster_name = request.POST.get('cluster_name', None)
         if githubrepo_address is not None:
 
-            # user 아이디 가져오기
-            userid = request.user.username
+            # group 아이디 가져오기
+            group = request.user.group
+            userid = group.name
 
             # key 가져오기. filter 로 가져오면 list 형태로 반환되므로,
             # Model 객체를 가져와서 해당 객체의 속성 값을 통해 AWS Key 값을 가져온다

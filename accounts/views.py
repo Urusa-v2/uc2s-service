@@ -73,7 +73,7 @@ def leadersingup(request, bid):
             user.save()
             
             # Jenkins 계정의 ID 는 GROUP 의 이름으로 지정한다
-            groupname = group.name()
+            groupname = group.name
 
             # 해당 SHELL 은 jenkins 유저 생성 명령 및 api 토큰 생성 명령 실행을 내리고, PIPE 를 통해 결과를 반환한다
             result = subprocess.Popen(['/var/www/django/accounts/setjenkinsuser.sh %s' % (groupname)],

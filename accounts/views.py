@@ -102,13 +102,11 @@ def TokenInputPage(request, bid):
         token = Token.objects.get(id=bid)
         token.aws_access_key_id = request.POST.get('aws_access_key_id',None)
         token.aws_secret_access_key = request.POST.get('aws_secret_access_key', None)
-        token.github_access_token = request.POST.get('github_access_token', None)
-        if ( token.aws_access_key_id != "" ) and (token.aws_secret_access_key != "") and (token.github_access_token != ""):
+        if ( token.aws_access_key_id != "" ) and (token.aws_secret_access_key != ""):
             token.save()
             context = {
               'aws_access_key_id': token.aws_access_key_id,
               'aws_secret_access_key': token.aws_secret_access_key,
-              'github_access_token': token.github_access_token
             }
             return render(request, 'accounts/token_confirm.html', context)
         else :
@@ -150,17 +148,16 @@ def profile(request):
     # token 정보 조회
     aws_access_key_id = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
     aws_secret_access_key = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
-    github_access_token = Token.objects.filter(group=request.user.group).values('github_access_token')
+
     context = {'userlist': user, 'aak': aws_access_key_id,
                'asa': aws_secret_access_key,
-               'gat': github_access_token}
+               }
     if request.method=="GET":
         return render(request, 'accounts/profile.html', context)
     elif request.method=="POST":
         token = Token.objects.get(group=request.user.group)
         token.aws_access_key_id = request.POST.get('aws_access_key_id',None)
         token.aws_secret_access_key = request.POST.get('aws_secret_access_key',None)
-        token.github_access_token = request.POST.get('github_access_token',None)
         token.save()
 
         return render(request,'accounts/profile.html',context)

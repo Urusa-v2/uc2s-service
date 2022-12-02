@@ -44,25 +44,15 @@ def deleteAwsSecretkey(request):
 
 
 @login_required(login_url='/accounts/login')
-def deleteGitToken(request):
-    token = Token.objects.get(group=request.user.group)
-    token.github_access_token = ''
-    token.save()
-    return redirect('/')
-
-
-@login_required(login_url='/accounts/login')
 def getTokenPage(request):
     if request.method == "GET":
         aws_access_key_id = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
         aws_secret_access_key = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
-        github_access_token = Token.objects.filter(group=request.user.group).values('github_access_token')
         print('aws',aws_access_key_id,aws_secret_access_key)
 
         context = {
             'aak': aws_access_key_id,
-            'asa':aws_secret_access_key,
-            'gat':github_access_token
+            'asa':aws_secret_access_key
         }
         return render(request, 'board/token_output.html',context)
 

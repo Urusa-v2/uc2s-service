@@ -83,15 +83,6 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <label for="gat" class="col-md-4 col-lg-3 col-form-label">Github Access Token</label>
-                            <div class="col-md-8 col-lg-9">
-                                {% for token in gat.all%}
-                                <input name="github_access_token" type="text" class="form-control" id="gat"
-                                       value="{{ token.github_access_token }}">
-                                {% endfor %}
-                            </div>
-                        </div>
 
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary">Save Changes</button>

@@ -31,7 +31,6 @@ urlpatterns = [
 
     path('board/aws_key_id_delete',board.views.deleteAwsKeyId),
     path('board/aws_secret_key_delete',board.views.deleteAwsSecretkey),
-    path('board/github_token_delete',board.views.deleteGitToken),
 
     path('accounts/chooseuser', accounts.views.chooseuser),
     path('accounts/creategroup',accounts.views.createGroup),

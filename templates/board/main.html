@@ -6,11 +6,11 @@
 {% block contents %}
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>Dashboard</h1>
+        <h1>대시보드</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item active">Dashboard</li>
+                <li class="breadcrumb-item"><a href="/">홈</a></li>
+                <li class="breadcrumb-item active">대시보드</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -26,7 +26,7 @@
                     <div class="col-xxl-4 col-md-6">
                         <div class="card info-card sales-card">
                             <div class="card-body">
-                                <h5 class="card-title">EKS Fee<span> | Total</span></h5>
+                                <h5 class="card-title">EKS 요금<span> | 총합</span></h5>
 
                                 <div class="d-flex align-items-center">
                                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -45,7 +45,7 @@
                     <div class="col-xxl-4 col-md-6">
                         <div class="card info-card revenue-card">
                             <div class="card-body">
-                                <h5 class="card-title">Worker Fee <span>| Total</span></h5>
+                                <h5 class="card-title">Worker 요금 <span>| 총합</span></h5>
                                 <div class="d-flex align-items-center">
                                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                         <i class="bi bi-currency-dollar"></i>
@@ -64,13 +64,13 @@
 
                         <div class="card info-card customers-card">
                             <div class="card-body">
-                                <h5 class="card-title">Service Fee <span>| This Month</span></h5>
+                                <h5 class="card-title">서비스 요금 <span>| 총합</span></h5>
                                 <div class="d-flex align-items-center">
                                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                         <i class="bi bi-currency-dollar"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>1000 ₩</h6>
+                                        <h6>{{ money }}</h6>
                                     </div>
                                 </div>
 
@@ -87,17 +87,17 @@
                                 <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                     <li class="dropdown-header text-start">
-                                        <h6>Filter</h6>
+                                        <h6>필터</h6>
                                     </li>
 
-                                    <li><a class="dropdown-item" href="#">Today</a></li>
-                                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                                    <li><a class="dropdown-item" href="#">오늘</a></li>
+                                    <li><a class="dropdown-item" href="#">이번 달</a></li>
+                                    <li><a class="dropdown-item" href="#">이번 년도</a></li>
                                 </ul>
                             </div>
 
                             <div class="card-body">
-                                <h5 class="card-title">EKS Reports <span>/Month</span></h5>
+                                <h5 class="card-title">EKS 리포트 <span>/이번 달</span></h5>
 
                                 <!-- Line Chart -->
                                 <div id="reportsChart"></div>
@@ -167,14 +167,14 @@
                     <div class="col-12">
                         <div class="card top-selling overflow-auto">
                             <div class="card-body pb-0">
-                                <h5 class="card-title">Your Clusters</h5>
+                                <h5 class="card-title">클러스터 정보</h5>
                                 <table class="table table-borderless">
                                     <thead>
                                     <tr>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">End Point</th>
-                                        <th scope="col">IP</th>
-                                        <th scope="col">Created At</th>
+                                        <th scope="col">이름</th>
+                                        <th scope="col">End Point 주소</th>
+                                        <th scope="col">IP 주소</th>
+                                        <th scope="col">생성 날짜</th>
 
                                     </tr>
                                     </thead>

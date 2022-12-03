@@ -48,7 +48,8 @@ urlpatterns = [
     path('board/startcicd/<str:rname>',board.views.startcicd),
     path('board/startci/<str:rname>',board.views.startci),
     path('board/contact',board.views.contact),
-    path('board/termsAndConditions',board.views.terms_and_conditions)
+    path('board/termsAndConditions',board.views.terms_and_conditions),
+    path('board/showbuildhistory',board.views.buildhistroy)
     
 
 ]

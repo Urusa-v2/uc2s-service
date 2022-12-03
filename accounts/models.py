@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 class Groups(models.Model):
     name = models.TextField(unique = True)
+    money = models.IntegerField()
     def __str__(self):
         return self.name
 

@@ -278,5 +278,8 @@ def buildhistroy(request):
     repo = Build.objects.filter(group=request.user.group).values('repo')
     cluster = Build.objects.filter(group=request.user.group).values('cluster')
     git = Build.objects.filter(group=request.user.group).values('git')
-    context = {'username':username, 'result':result, 'time':time, 'cicd':cicd, 'repo':repo, 'cluster':cluster, 'git':git}
+
+    dict_list = zip(username,result,time,cicd,repo,cluster,git)
+    
+    context = {'dict_list':dict_list, 'username':username, 'result':result, 'time':time, 'cicd':cicd, 'repo':repo, 'cluster':cluster, 'git':git}
     return render(request, 'board/buildhistory.html', context)

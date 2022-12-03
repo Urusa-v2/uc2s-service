@@ -39,6 +39,7 @@ urlpatterns = [
     path('accounts/withdraw', accounts.views.withdraw),
     path('accounts/login', accounts.views.login),
     path('accounts/logout', accounts.views.logout),
+    path('accounts/authgroup',accounts.views.AuthGroup),
 
 
     path('accounts/profile',accounts.views.profile),

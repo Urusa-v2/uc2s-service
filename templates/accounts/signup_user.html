@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Pages / Register - NiceAdmin Bootstrap Template</title>
+    <title>개발자 계정 가입하기</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -68,55 +68,63 @@
                         <div class="card mb-3">
                             <div class="card-body">
                                 <div class="pt-4 pb-2">
-                                    <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
-                                    <p class="text-center small">Enter your personal details to create account</p>
+                                    <h5 class="card-title text-center pb-0 fs-4">계정 생성</h5>
+                                    <p class="text-center small">계정 생성을 위한 정보를 입력해주세요</p>
                                 </div>
 
                                 <form class="row g-3 needs-validation" novalidate method="post">
                                     {% csrf_token %}
                                     <div class="col-12">
-                                        <label for="yourUsername" class="form-label">Username</label>
+                                        <label for="yourUsername" class="form-label">유저명</label>
                                         <div class="input-group has-validation">
                                             <span class="input-group-text" id="inputGroupPrepend">@</span>
                                             <input type="text" name="username" class="form-control" id="yourUsername"
                                                    required>
-                                            <div class="invalid-feedback">Please choose a username.</div>
+                                            <div class="invalid-feedback">유저명을 입력해주세요</div>
                                         </div>
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="yourEmail" class="form-label">Your Email</label>
+                                        <label for="yourEmail" class="form-label">이메일</label>
                                         <input type="email" name="email" class="form-control" id="yourEmail" required>
-                                        <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                                        <div class="invalid-feedback">이메일 주소를 입력해주세요</div>
                                     </div>
 
 
                                     <div class="col-12">
-                                        <label for="yourPassword1" class="form-label">Password</label>
+                                        <label for="yourPassword1" class="form-label">비밀번호</label>
                                         <input type="password" name="password1" class="form-control" id="yourPassword1"
                                                required>
                                         <font size="1">비밀번호는 8글자 이상이며, 숫자로만 이루어질 수 없습니다.</font>
-                                        <div class="invalid-feedback">Please enter your password!</div>
+                                        <div class="invalid-feedback">비밀번호를 입력해주세요</div>
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="yourPassword2" class="form-label">Password Confirmation</label>
+                                        <label for="yourPassword2" class="form-label">비밀번호 확인</label>
                                         <input type="password" name="password2" class="form-control" id="yourPassword2"
                                                required>
-                                        <div class="invalid-feedback">Please enter your password!</div>
+                                        <div class="invalid-feedback">비밀번호 확인을 입력해주세요</div>
                                     </div>
 
                                     <div class="col-12">
-                                        <label class="col-sm-2 col-form-label">Group</label>
+                                        <label class="col-sm-2 col-form-label">그룹</label>
                                         <div class="col-sm-10">
                                             <select class="form-select" aria-label="Default select example" name="group"
                                                     required="required">
-                                                <option value="" selected disabled> Select Your Group</option>
+                                                <option value="" selected disabled> 그룹 선택 </option>
                                                 {% for group in grouplist %}
                                                 <option value="{{ group.id }}">{{ group.name }}</option>
                                                 {% endfor%}
                                             </select>
                                         </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="yourPassword1" class="form-label">그룹 비밀번호</label>
+                                        <input type="password" name="gpass" class="form-control" id="grouppassword"
+                                               required>
+                                        <font size="1">가입 하고자 하는 그룹의 비밀번호를 입력해 주세요</font>
+                                        <div class="invalid-feedback">그룹 비밀번호를 입력해 주세요</div>
                                     </div>
 
 
@@ -130,11 +138,10 @@
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <button class="btn btn-primary w-100" type="submit">Create Account</button>
+                                        <button class="btn btn-primary w-100" type="submit">계정 생성</button>
                                     </div>
                                     <div class="col-12">
-                                        <p class="small mb-0">Already have an account? <a href="/accounts/login">Log
-                                            in</a>
+                                        <p class="small mb-0">이미 계정이 있으신가요? <a href="/accounts/login">로그인</a>
                                         </p>
                                     </div>
 

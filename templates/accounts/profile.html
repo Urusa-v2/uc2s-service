@@ -7,12 +7,12 @@
 {% block contents %}
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>Profile</h1>
+        <h1>프로필</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item">Users</li>
-                <li class="breadcrumb-item active">Profile</li>
+                <li class="breadcrumb-item"><a href="/">홈</a></li>
+                <li class="breadcrumb-item">유저</li>
+                <li class="breadcrumb-item active">프로필</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -23,37 +23,37 @@
             <ul class="nav nav-tabs nav-tabs-bordered">
 
                 <li class="nav-item">
-                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">유저 정보
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Token</button>
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">토큰 수정</button>
                 </li>
             </ul>
             <div class="tab-content pt-2">
 
                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
 
-                    <h5 class="card-title">Profile Details</h5>
+                    <h5 class="card-title">프로필 상세정보</h5>
 
                     <div class="row">
-                        <div class="col-lg-3 col-md-4 label ">UserName</div>
+                        <div class="col-lg-3 col-md-4 label ">유저명</div>
                         <div class="col-lg-9 col-md-8">{{ user.username }}</div>
                     </div>
 
                     <div class="row">
-                        <div class="col-lg-3 col-md-4 label">Email</div>
+                        <div class="col-lg-3 col-md-4 label">이메일</div>
                         <div class="col-lg-9 col-md-8">{{ user.email }}</div>
                     </div>
 
                     {% if user.isleader %}
                     <div class="row">
-                        <div class="col-lg-3 col-md-4 label">Type</div>
+                        <div class="col-lg-3 col-md-4 label">직책</div>
                         <div class="col-lg-9 col-md-8">Leader</div>
                     </div>
                     {% else %}
                     <div class="row">
-                        <div class="col-lg-3 col-md-4 label">Type</div>
+                        <div class="col-lg-3 col-md-4 label">직책</div>
                         <div class="col-lg-9 col-md-8">Developer</div>
                     </div>
                     {% endif %}
@@ -85,11 +85,11 @@
                         </div>
 
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="submit" class="btn btn-primary">저장</button>
                         </div>
                         <!-- Basic Modal -->
                                     <a href="#basicModal" data-bs-toggle="modal" data-bs-target="#basicModal">
-                                        View IAM Roles
+                                        IAM Roles 확인
                                     </a>
                                     <div class="modal fade" id="basicModal" tabindex="-1">
                                         <div class="modal-dialog">
@@ -103,7 +103,7 @@
                                                     <img src="{% static 'assets/img/example-role.png' %}"
                                                          style="width:450px;height:300px">
                                                     <br>
-                                                    Please register the key according to the 4 rules below.
+                                                    아래 4가지 룰에 맞추어 키를 등록해주세요.
                                                     <br>
                                                     <br>
                                                     - AmazonEKSClusterPolicy
@@ -116,7 +116,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Close
+                                                            data-bs-dismiss="modal">닫기
                                                     </button>
                                                 </div>
                                             </div>

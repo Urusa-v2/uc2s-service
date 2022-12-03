@@ -6,11 +6,11 @@
 {% block contents %}
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>Form Elements</h1>
+        <h1>리전 선택창</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item">Pipeline</li>
+                <li class="breadcrumb-item"><a href="/">홈</a></li>
+                <li class="breadcrumb-item">파이프라인</li>
                 <li class="breadcrumb-item active">CICD</li>
             </ol>
         </nav>
@@ -18,16 +18,16 @@
 
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">General Form Elements</h5>
+            <h5 class="card-title">리전을 선택하세요</h5>
 
             <!-- General Form Elements -->
             <form method="post" >
                 {% csrf_token %}
                 <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label">Region Select</label>
+                    <label class="col-sm-2 col-form-label">리전 선택</label>
                     <div class="col-sm-10">
                         <select name="region" class="form-select" aria-label="Default select example" required="required">
-                    <option value="">Select your region</option>
+                    <option value="">리전 목록</option>
                     <option value="us-east-2">US East (Ohio)</option>
                     <option value="us-east-1">US East (N. Virginia)</option>
                     <option value="us-west-1">US West (N. California)</option>
@@ -67,20 +67,32 @@
                 </div>
 
             </form><!-- End General Form Elements -->
-                      <!-- Card with an image on left -->
-          <div class="card mb-3">
-            <div class="row g-0">
-              <div class="col-md-4">
-                <img src="{% static 'assets/img/example-github.PNG' %}" class="img-fluid rounded-start" alt="...">
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title">Follow the example on the left</h5>
-                  <p class="card-text">Notice the red box. You can upload the file to your GitHub, and then register the GitHub address. You need to contain Dockerfile & yaml file ( kubernetes resource template file )</p>
+
+            <!-- Basic Modal -->
+            <a href="#basicModal" data-bs-toggle="modal" data-bs-target="#basicModal">
+                Github 설정 예시
+            </a>
+            <div class="modal fade" id="basicModal" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Github 설정 예시</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <img src="{% static 'assets/img/example-github2.PNG' %}"
+                                 style="width:700px;height:400px">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">닫기
+                            </button>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div><!-- End Card with an image on left -->
+            </div><!-- End Basic Modal-->
+
         </div>
     </div>
 

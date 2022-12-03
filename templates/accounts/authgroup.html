@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Pages / Register - NiceAdmin Bootstrap Template</title>
+    <title>그룹 생성 인증</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -54,27 +54,36 @@
                                 <span class="d-none d-lg-block">UC2S</span>
                             </a>
                         </div><!-- End Logo -->
-
+                        {% if messages %}
+                        {% for messages in messages %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="bi bi-exclamation-octagon me-1"></i>
+                            {{ messages }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
                         <div class="card mb-3">
 
                             <div class="card-body">
 
                                 <div class="pt-4 pb-2">
-                                    <h5 class="card-title text-center pb-0 fs-4">입력 성공</h5>
-                                    <p class="text-center small">정상적으로 입력이 완료되었습니다. </p>
+                                    <h5 class="card-title text-center pb-0 fs-4">그룹 생성 인증하기</h5>
+                                    <p class="text-center small">인증 메세지를 입력해주세요</p>
                                 </div>
 
-                                <div class="row">
-                                    {% for id in aak.all %}
-                                    <div class="col-lg-3 col-md-4 label">{{ id.aws_access_key_id }}</div>
-                                    {% endfor %}
-                                    {% for key in asa.all %}
-                                    <div class="col-lg-3 col-md-4 label">{{ key.aws_secret_access_key }}</div>
-                                    {% endfor %}
-                                </div>
-                                <div class="col-12">
-                                    <button class="btn btn-primary w-100" onclick="location.href='/'>Home</button>
-                                </div>
+                                <form class="row g-3 needs-validation" novalidate method="post">
+                                    {% csrf_token %}
+                                    <div class="col-12">
+                                        <label for="yourGroup" class="form-label">인증 메세지</label>
+                                        <input type="text" name="authmessage" class="form-control" id="authmessage" required>
+                                        <div class="invalid-feedback">관리자에게 받은 인증 메세지를 입력해주세요!</div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="btn btn-primary w-100" type="submit">다음으로</button>
+                                    </div>
+                                </form>
 
                             </div>
                         </div>

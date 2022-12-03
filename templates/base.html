@@ -81,7 +81,7 @@
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="/accounts/profile">
                             <i class="bi bi-person"></i>
-                            <span>My Profile</span>
+                            <span>내 프로필</span>
                         </a>
                     </li>
                     <li>
@@ -95,7 +95,7 @@
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="/board/contact">
                             <i class="bi bi-question-circle"></i>
-                            <span>Need Help?</span>
+                            <span>도움이 필요하신가요?</span>
                         </a>
                     </li>
                     <li>
@@ -105,7 +105,7 @@
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="/accounts/logout">
                             <i class="bi bi-box-arrow-right"></i>
-                            <span>Logout</span>
+                            <span>로그아웃</span>
                         </a>
                     </li>
 
@@ -123,54 +123,60 @@
         <li class="nav-item">
             <a class="nav-link " href="/">
                 <i class="bi bi-grid"></i>
-                <span>Dashboard</span>
+                <span>대시보드</span>
             </a>
         </li><!-- End Dashboard Nav -->
 
 
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-journal-text"></i><span>Information</span><i class="bi bi-chevron-down ms-auto"></i>
+                <i class="bi bi-journal-text"></i><span>EKS & ECR 정보</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="/board/getEksDes">
-                        <i class="bi bi-circle"></i><span>EKS Cluster</span>
+                        <i class="bi bi-circle"></i><span>EKS 클러스터 정보</span>
                     </a>
                 </li>
                 <li>
                     <a href="/board/getRepoDes">
-                        <i class="bi bi-circle"></i><span>ECR Repository</span>
+                        <i class="bi bi-circle"></i><span>ECR 저장소 정보</span>
                     </a>
                 </li>
             </ul>
         </li><!-- End Forms Nav -->
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-menu-button-wide"></i><span>Pipeline</span><i class="bi bi-chevron-down ms-auto"></i>
+                <i class="bi bi-menu-button-wide"></i><span>파이프라인</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="/board/selectRegionCi">
-                        <i class="bi bi-circle"></i><span>CI Pipeline</span>
+                        <i class="bi bi-circle"></i><span>CI 파이프라인</span>
                     </a>
                 </li>
                 <li>
                     <a href="/board/selectRegionCiCd">
-                        <i class="bi bi-circle"></i><span>CI+CD Pipeline</span>
+                        <i class="bi bi-circle"></i><span>CI+CD 파이프라인</span>
                     </a>
                 </li>
 
             </ul>
         </li><!-- End Components Nav -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/board/showbuildhistory">
+                <i class="bi bi-person"></i>
+                <span>작업 이력</span>
+            </a>
+        </li>
 
-        <li class="nav-heading">Pages</li>
+        <li class="nav-heading">목록</li>
 
         {% if request.user.is_authenticated%}
         <li class="nav-item">
             <a class="nav-link collapsed" href="/accounts/profile">
                 <i class="bi bi-person"></i>
-                <span>Profile</span>
+                <span>프로필</span>
             </a>
         </li><!-- End Profile Page Nav -->
         {% else %}
@@ -178,13 +184,13 @@
         <li class="nav-item">
             <a class="nav-link collapsed" href="/accounts/chooseuser">
                 <i class="bi bi-card-list"></i>
-                <span>Sign Up</span>
+                <span>회원 가입</span>
             </a>
         </li><!-- End Sign Up Page Nav -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="/accounts/login">
                 <i class="bi bi-box-arrow-in-right"></i>
-                <span>Login</span>
+                <span>로그인</span>
             </a>
         </li><!-- End Login Page Nav -->
 
@@ -193,7 +199,7 @@
         <li class="nav-item">
             <a class="nav-link collapsed" href="/board/contact">
                 <i class="bi bi-envelope"></i>
-                <span>Contact</span>
+                <span>문의사항</span>
             </a>
         </li><!-- End Contact Page Nav -->
 
@@ -202,7 +208,7 @@
         <li class="nav-item">
             <a class="nav-link collapsed" href="/accounts/withdraw">
                 <i class="bi bi-dash-circle"></i>
-                <span>Withdraw</span>
+                <span>회원탈퇴</span>
             </a>
         </li><!-- End Withdraw Page Nav -->
         {% endif %}

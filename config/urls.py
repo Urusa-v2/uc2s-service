@@ -39,6 +39,7 @@ urlpatterns = [
     path('accounts/withdraw', accounts.views.withdraw),
     path('accounts/login', accounts.views.login),
     path('accounts/logout', accounts.views.logout),
+    path('accounts/authgroup',accounts.views.AuthGroup),
 
 
     path('accounts/profile',accounts.views.profile),
@@ -48,7 +49,8 @@ urlpatterns = [
     path('board/startcicd/<str:rname>',board.views.startcicd),
     path('board/startci/<str:rname>',board.views.startci),
     path('board/contact',board.views.contact),
-    path('board/termsAndConditions',board.views.terms_and_conditions)
+    path('board/termsAndConditions',board.views.terms_and_conditions),
+    path('board/showbuildhistory',board.views.buildhistroy)
     
 
 ]

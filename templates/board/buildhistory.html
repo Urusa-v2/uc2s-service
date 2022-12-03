@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+<html lang="en">
+<body>
+{% block contents %}
+<main id="main" class="main">
+    <h5 class="card-title">작업 내역</h5>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">번호</th>
+            <th scope="col">작업유저</th>
+            <th scope="col">작업종류</th>
+            <th scope="col">저장소</th>
+            <th scope="col">클러스터</th>
+            <th scope="col">Git</th>
+            <th scope="col">결과</th>
+            <th scope="col">시행시간</th>
+
+        </tr>
+        </thead>
+
+        <tbody>
+            {% for build_id,username,cicd,repo,cluster,git,result,time in dict_list %}
+            <tr>
+                <td>{{ build_id.id }}</td>
+                <td>{{ username.username }}</td>
+                <td>{{ cicd.cicd }}</td>
+                <td>{{ repo.repo }}</td>
+                <td>{{ cluster.cluster }}</td>
+                <td>{{ git.git }}</td>
+                <td>{{ result.result }}</td>
+                <td>{{ time.time }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+</main><!-- End #main -->
+{% endblock %}
+</body>
+</html>

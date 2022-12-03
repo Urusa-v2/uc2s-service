@@ -126,6 +126,9 @@ def startci(request,rname): # rname 은 리전 선택창에서 선택한 리전�
           # ci 만 수행할 시 cluster name 은 필요 없으므로 None ( Null ) 로 설정한다. 이는 코드와 파일의 재활용성을 높이기 위해 동일한 shell 파일을 사용하기 위함이다
           # 표준 입출력에 대해 Pipe 를 열어서 build 성공 여부를 가져온다
           result = subprocess.Popen(['/var/www/django/board/calljenkins.sh %s %s %s %s %s %s %s %s' % (userid, repo_name, None, githubrepo_address, aws_access_key_id, aws_secret_access_key, region, way)],shell=True, stdout=subprocess.PIPE)
+          # 반환 결과를 복호화
+          result = result.communicate()[0]
+          result = result.decode('ascii')
 
           # 현재 작업 실행 시간 가져오기
           now = datetime.now()
@@ -195,6 +198,9 @@ def startcicd(request,rname): # rname 은 리전 선택창에서 선택한 리�
             # shell 을 통해 jenkins 에 데이터 전달 및 실행
             # 표준 입출력에 대해 Pipe 를 열어서 build 성공 여부를 가져온다
             result = subprocess.Popen(['/var/www/django/board/calljenkins.sh %s %s %s %s %s %s %s %s' % (userid, repo_name, cluster_name, githubrepo_address, aws_access_key_id, aws_secret_access_key, region,way)], shell=True, stdout=subprocess.PIPE)
+            # 반환 결과를 복호화
+            result = result.communicate()[0]
+            result = result.decode('ascii')
 
             # 현재 작업 실행 시간 가져오기
             now = datetime.now()

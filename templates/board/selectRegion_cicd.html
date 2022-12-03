@@ -67,20 +67,31 @@
                 </div>
 
             </form><!-- End General Form Elements -->
-                      <!-- Card with an image on left -->
-          <div class="card mb-3">
-            <div class="row g-0">
-              <div class="col-md-4">
-                <img src="{% static 'assets/img/example-github.PNG' %}" class="img-fluid rounded-start" alt="...">
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title">왼쪽 사항을 준비해주세요</h5>
-                  <p class="card-text">강조 부분을 확인해주세요. Github 레포지토리에 다음 파일을 올리고, 레포지토리 주소를 준비해주세요. 레포지토리에는 Dockerfile ( 필수 ), yaml file ( 배포를 위한 매니페스트 파일 - 필수), 기타 필요 파일 ( 선택 ) 을 준비해주시면 됩니다</p>
+
+            <!-- Basic Modal -->
+            <a href="#basicModal" data-bs-toggle="modal" data-bs-target="#basicModal">
+                Github 설정 예시
+            </a>
+            <div class="modal fade" id="basicModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Github 설정 예시</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <img src="{% static 'assets/img/example-github2.PNG' %}"
+                                 style="width:450px;height:300px">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">닫기
+                            </button>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div><!-- End Card with an image on left -->
+            </div><!-- End Basic Modal-->
         </div>
     </div>
 

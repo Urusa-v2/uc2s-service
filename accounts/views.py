@@ -51,6 +51,7 @@ def createGroup(request):
         groupform = groupForm(request.POST)
         if groupform.is_valid():
             group = groupform.save(commit=False)
+            group.money = 0
             group.save()
             return redirect('/accounts/leadersingup/' + str(group.id))
         else:

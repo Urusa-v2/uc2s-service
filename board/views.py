@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.db import connection
@@ -6,6 +7,7 @@ from api.ecr_inform import getRepoDescription, getRepoName
 from api.eks_inform import getEksCluster, getEksDescription
 from api.cost_inform import getCost, ec2Cost
 from board.models import Token
+from board.models import Build
 from accounts.models import Groups
 from django.contrib.auth.decorators import login_required
 
@@ -21,7 +23,11 @@ def mainPage(request):
     if request.user.is_authenticated:
         access_key_set = Token.objects.filter(group=request.user.group).values('aws_access_key_id')
         secret_key_set = Token.objects.filter(group=request.user.group).values('aws_secret_access_key')
-        context = { 'eks' : getEksDescription(access_key_set, secret_key_set, region), 'cost' : getCost(access_key_set,secret_key_set,region), 'ec2cost' : ec2Cost(access_key_set,secret_key_set,region) }
+
+        # group 의 서비스 이용 요금
+        group = request.user.group
+        money = group.money
+        context = { 'eks' : getEksDescription(access_key_set, secret_key_set, region), 'cost' : getCost(access_key_set,secret_key_set,region), 'ec2cost' : ec2Cost(access_key_set,secret_key_set,region), 'money':money }
         return render(request, 'board/main.html', context)
     else:
         return render(request, 'board/main_not.html')
@@ -96,9 +102,7 @@ def startci(request,rname): # rname 은 리전 선택창에서 선택한 리전�
         print(context)
         return render(request, 'board/startci.html',context)
 
-
     elif request.method == "POST":
-
         githubrepo_address = request.POST.get('githubrepo_address', None)
 
         if githubrepo_address is not None: # github repo 주소를 잘 작성했을 경우
@@ -114,6 +118,7 @@ def startci(request,rname): # rname 은 리전 선택창에서 선택한 리전�
 
           # cicd 설정 변수
           way = 'ci'
+
           # group 아이디 가져오기
           group = request.user.group
           userid = group.name
@@ -121,9 +126,36 @@ def startci(request,rname): # rname 은 리전 선택창에서 선택한 리전�
           # ci 만 수행할 시 cluster name 은 필요 없으므로 None ( Null ) 로 설정한다. 이는 코드와 파일의 재활용성을 높이기 위해 동일한 shell 파일을 사용하기 위함이다
           # 표준 입출력에 대해 Pipe 를 열어서 build 성공 여부를 가져온다
           result = subprocess.Popen(['/var/www/django/board/calljenkins.sh %s %s %s %s %s %s %s %s' % (userid, repo_name, None, githubrepo_address, aws_access_key_id, aws_secret_access_key, region, way)],shell=True, stdout=subprocess.PIPE)
+
+          # 현재 작업 실행 시간 가져오기
+          now = datetime.now()
+          nowtime = now.strftime('%Y-%m-%d %H:%M:%S')
+
+          # 작업 이력을 저장할 Bulid 객체 생성 및 데이터 지정
+          build = Build()
+          build.group = request.user.group
+          build.username = request.user.username
+          build.cicd = way
+          build.time = nowtime
+          build.repo = repo_name
+          build.git = githubrepo_address
+          build.cluster = "No Cluster"
+
+          # group 이용 금액 증가
+          group.money += 1000
+          group.save()
+
           if result == "Finished: SUCCESS":  # build 성공창 출력
+              # build 기록에 성공 여부 지정
+              build.result = "Success"
+              # 작업 이력 저장
+              build.save()
               return render(request, 'board/successpage.html')
           else:  # build 실패창 출력
+              # build 기록에 성공 여부 지정
+              build.result = "Fail"
+              # 작업 이력 저장
+              build.save()
               return render(request, 'board/successpage.html')
         else:
           return redirect('/')  
@@ -140,6 +172,7 @@ def startcicd(request,rname): # rname 은 리전 선택창에서 선택한 리�
         repo_list = getRepoDescription(access_key_set, secret_key_set, region)
         context = {'eks_list':eks_list, 'repo_list':repo_list, 'region':region}
         return render(request, 'board/startcicd.html',context)
+
     if request.method == "POST":
         region = request.POST.get('region', None)
         githubrepo_address = request.POST.get('githubrepo_address', None)
@@ -162,14 +195,39 @@ def startcicd(request,rname): # rname 은 리전 선택창에서 선택한 리�
             # shell 을 통해 jenkins 에 데이터 전달 및 실행
             # 표준 입출력에 대해 Pipe 를 열어서 build 성공 여부를 가져온다
             result = subprocess.Popen(['/var/www/django/board/calljenkins.sh %s %s %s %s %s %s %s %s' % (userid, repo_name, cluster_name, githubrepo_address, aws_access_key_id, aws_secret_access_key, region,way)], shell=True, stdout=subprocess.PIPE)
+
+            # 현재 작업 실행 시간 가져오기
+            now = datetime.now()
+            nowtime = now.strftime('%Y-%m-%d %H:%M:%S')
+
+            # 작업 이력을 저장할 Bulid 객체 생성 및 데이터 지정
+            build = Build()
+            build.group = request.user.group
+            build.username = request.user.username
+            build.cicd = way
+            build.git = githubrepo_address
+            build.time = nowtime
+            build.repo = repo_name
+            build.cluster = cluster_name
+
+            # group 이용 금액 증가
+            group.money += 1000
+            group.save()
+
             if result == "Finished: SUCCESS": #build 성공창 출력
+                # build 기록에 성공 여부 지정
+                build.result = "Success"
+                # 작업 이력 저장
+                build.save()
                 return render(request, 'board/successpage.html')
             else: # build 실패창 출력
+                # build 기록에 성공 여부 지정
+                build.result = "Fail"
+                # 작업 이력 저장
+                build.save()
                 return render(request, 'board/successpage.html')
         else:
             return redirect('/')
-
-
 
 @login_required(login_url='/accounts/login')
 def eks_list(request):
@@ -210,3 +268,15 @@ def contact(request):
 
 def terms_and_conditions(request):
     return render(request, 'board/terms_and_conditions.html')
+
+@login_required(login_url='/accounts/login')
+def buildhistroy(request):
+    username = Build.Objects.filter(group=request.user.group).values('username')
+    result = Build.Objects.filter(group=request.user.group).values('result')
+    time = Build.Objects.filter(group=request.user.group).values('time')
+    cicd = Build.Objects.filter(group=request.user.group).values('cicd')
+    repo = Build.Objects.filter(group=request.user.group).values('repo')
+    cluster = Build.Objects.filter(group=request.user.group).values('cluster')
+    git = Build.Objects.filter(group=request.user.group).values('git')
+    context = {'username':username, 'result':result, 'time':time, 'cicd':cicd, 'repo':repo, 'cluster':cluster, 'git':git}
+    return render(request, 'board/showbuildhistory.html', context)

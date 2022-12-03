@@ -56,6 +56,7 @@ def getTokenPage(request):
         }
         return render(request, 'board/token_output.html',context)
 
+@login_required(login_url='/accounts/login')
 def selectRegionCI(request):
     if request.method == "GET":
         return render(request, 'board/selectRegion_ci.html')
@@ -64,6 +65,7 @@ def selectRegionCI(request):
         region = request.POST.get('region')
         return redirect('/board/startci/'+str(region))
 
+@login_required(login_url='/accounts/login')
 def selectRegionCICD(request):
     if request.method == "GET":
         return render(request, 'board/selectRegion_cicd.html')

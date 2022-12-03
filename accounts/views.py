@@ -34,13 +34,36 @@ def singup(request):
         if signupForm.is_valid():
             user = signupForm.save(commit=False)
             user.isleader=False
-            user.save()
-            return redirect('/accounts/login')
+
+            # 가입하고자 하는 그룹의 패스워드 조회를 위해 가져오기
+            group = user.group
+            group_pass = group.grouppassword
+            # 가입자가 입력한 그룹 패스워드랑 해당 그룹의 패스워드 비교
+            if user.gpass == group_pass:
+                user.save()
+                return redirect('/accounts/login')
+            else: # 패스워드가 다르면 돌려보내기
+                messages.info(request, '가입하고자 하는 그룹의 비밀번호가 틀립니다 ')
+                signupForm = SignupForm()
+                grouplist = Groups.objects.all()
+                return render(request, 'accounts/signup_user.html', {'signupForm': signupForm, 'grouplist': grouplist})
         else:
-            messages.info(request, 'Account creation failed. Check your form! ')
+            messages.info(request, '가입에 실패하셨습니다. 입력 정보를 다시 확인해주세요 ')
             signupForm = SignupForm()
             grouplist = Groups.objects.all()
             return render(request, 'accounts/signup_user.html', {'signupForm': signupForm, 'grouplist': grouplist})
+
+# 그룹 생성 인증
+def AuthGroup(request):
+    if request.method == "GET":
+        return render(request,'accounts/authgroup.html')
+    elif request.method =="POST":
+        authmessage = request.POST.get('authmessage', None)
+        if authmessage == "makegroup":
+            return redirect('/accounts/creategroup')
+        else:
+            messages.info(request, '인증 메세지가 틀립니다. 다시 입력해주세요 ')
+            return redirect('/accounts/authgroup')
 
 # 그룹 생성하기
 def createGroup(request):
@@ -55,7 +78,7 @@ def createGroup(request):
             group.save()
             return redirect('/accounts/leadersingup/' + str(group.id))
         else:
-            messages.info(request, 'This group is already created. ')
+            messages.info(request, '이 그룹은 이미 존재합니다 ')
             groupform = groupForm()
             return render(request, 'accounts/creategroup.html', {'groupForm': groupform})
 
@@ -71,6 +94,8 @@ def leadersingup(request, bid):
             user.isleader = True
             group = Groups.objects.get(id=bid)
             user.group = group
+            # 리더는 그룹 패스워드를 입력하지 않아도 되므로, default 값을 지정한다
+            user.gpass = "no_pass_for_leader"
             user.save()
             
             # Jenkins 계정의 ID 는 GROUP 의 이름으로 지정한다
@@ -95,7 +120,7 @@ def leadersingup(request, bid):
             return redirect('/accounts/inputtoken/' + str(token.id))
         else:
             # 입력한 값이 잘못됬을 경우 처리
-            messages.info(request, 'Account creation failed. Check your form! ')
+            messages.info(request, '가입에 실패하셨습니다. 입력 정보를 다시 확인해주세요 ')
             signupForm = LeaderSignupForm()
             return render(request, 'accounts/signup_leader.html', {'signupForm': LeaderSignupForm})
 

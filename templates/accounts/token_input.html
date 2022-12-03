@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Pages / Register - NiceAdmin Bootstrap Template</title>
+    <title>토큰 입력</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -60,8 +60,8 @@
                             <div class="card-body">
 
                                 <div class="pt-4 pb-2">
-                                    <h5 class="card-title text-center pb-0 fs-4">Register Keys</h5>
-                                    <p class="text-center small">Enter your information</p>
+                                    <h5 class="card-title text-center pb-0 fs-4">키 등록</h5>
+                                    <p class="text-center small">정보 입력</p>
                                 </div>
 
                                 <form class="row g-3 needs-validation" novalidate method="post">
@@ -70,19 +70,19 @@
                                         <label for="aak" class="form-label"> AWS ACCESS KEY ID </label>
                                         <input type="text" name="aws_access_key_id" class="form-control" id="aak"
                                                required>
-                                        <div class="invalid-feedback">Please, enter your AWS ACCESS KEY ID!</div>
+                                        <div class="invalid-feedback">AWS ACCESS KEY ID를 입력해주세요</div>
                                     </div>
 
                                     <div class="col-12">
                                         <label for="ask" class="form-label">AWS Secret Access Key</label>
                                         <input type="text" name="aws_secret_access_key" class="form-control" id="ask"
                                                required>
-                                        <div class="invalid-feedback">Please, enter your AWS Secret Access Key!</div>
+                                        <div class="invalid-feedback">AWS Secret Access Key를 입력해주세요</div>
                                     </div>
 
                                     <!-- Basic Modal -->
                                     <a href="#basicModal" data-bs-toggle="modal" data-bs-target="#basicModal">
-                                        View IAM Roles
+                                        IAM Roles 확인
                                     </a>
                                     <div class="modal fade" id="basicModal" tabindex="-1">
                                         <div class="modal-dialog">
@@ -96,7 +96,7 @@
                                                     <img src="{% static 'assets/img/example-role.png' %}"
                                                          style="width:450px;height:300px">
                                                     <br>
-                                                    Please register the key according to the 4 rules below.
+                                                    아래 4가지 룰에 맞추어 키를 등록해주세요.
                                                     <br>
                                                     <br>
                                                     - AmazonEKSClusterPolicy
@@ -109,7 +109,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Close
+                                                            data-bs-dismiss="modal">닫기
                                                     </button>
                                                 </div>
                                             </div>
@@ -118,7 +118,7 @@
 
 
                                     <div class="col-12">
-                                        <button class="btn btn-primary w-100" type="submit">Register</button>
+                                        <button class="btn btn-primary w-100" type="submit">등록</button>
                                     </div>
 
                                 </form>

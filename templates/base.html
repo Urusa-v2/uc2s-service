@@ -81,7 +81,7 @@
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="/accounts/profile">
                             <i class="bi bi-person"></i>
-                            <span>My Profile</span>
+                            <span>내 프로필</span>
                         </a>
                     </li>
                     <li>
@@ -95,7 +95,7 @@
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="/board/contact">
                             <i class="bi bi-question-circle"></i>
-                            <span>Need Help?</span>
+                            <span>도움이 필요하신가요?</span>
                         </a>
                     </li>
                     <li>
@@ -105,7 +105,7 @@
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="/accounts/logout">
                             <i class="bi bi-box-arrow-right"></i>
-                            <span>Logout</span>
+                            <span>로그아웃</span>
                         </a>
                     </li>
 
@@ -123,7 +123,7 @@
         <li class="nav-item">
             <a class="nav-link " href="/">
                 <i class="bi bi-grid"></i>
-                <span>Dashboard</span>
+                <span>대시보드</span>
             </a>
         </li><!-- End Dashboard Nav -->
 
@@ -170,13 +170,13 @@
             </a>
         </li>
 
-        <li class="nav-heading">Pages</li>
+        <li class="nav-heading">목록</li>
 
         {% if request.user.is_authenticated%}
         <li class="nav-item">
             <a class="nav-link collapsed" href="/accounts/profile">
                 <i class="bi bi-person"></i>
-                <span>Profile</span>
+                <span>프로필</span>
             </a>
         </li><!-- End Profile Page Nav -->
         {% else %}
@@ -190,7 +190,7 @@
         <li class="nav-item">
             <a class="nav-link collapsed" href="/accounts/login">
                 <i class="bi bi-box-arrow-in-right"></i>
-                <span>Login</span>
+                <span>로그인</span>
             </a>
         </li><!-- End Login Page Nav -->
 
@@ -199,7 +199,7 @@
         <li class="nav-item">
             <a class="nav-link collapsed" href="/board/contact">
                 <i class="bi bi-envelope"></i>
-                <span>Contact</span>
+                <span>문의사항</span>
             </a>
         </li><!-- End Contact Page Nav -->
 
@@ -208,7 +208,7 @@
         <li class="nav-item">
             <a class="nav-link collapsed" href="/accounts/withdraw">
                 <i class="bi bi-dash-circle"></i>
-                <span>Withdraw</span>
+                <span>회원탈퇴</span>
             </a>
         </li><!-- End Withdraw Page Nav -->
         {% endif %}

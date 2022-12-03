@@ -126,6 +126,9 @@ def startci(request,rname): # rname 은 리전 선택창에서 선택한 리전�
           # ci 만 수행할 시 cluster name 은 필요 없으므로 None ( Null ) 로 설정한다. 이는 코드와 파일의 재활용성을 높이기 위해 동일한 shell 파일을 사용하기 위함이다
           # 표준 입출력에 대해 Pipe 를 열어서 build 성공 여부를 가져온다
           result = subprocess.Popen(['/var/www/django/board/calljenkins.sh %s %s %s %s %s %s %s %s' % (userid, repo_name, None, githubrepo_address, aws_access_key_id, aws_secret_access_key, region, way)],shell=True, stdout=subprocess.PIPE)
+          # 반환 결과를 복호화
+          result = result.communicate()[0]
+          result = result.decode('ascii')
 
           # 현재 작업 실행 시간 가져오기
           now = datetime.now()
@@ -141,13 +144,13 @@ def startci(request,rname): # rname 은 리전 선택창에서 선택한 리전�
           build.git = githubrepo_address
           build.cluster = "No Cluster"
 
-          # group 이용 금액 증가
-          group.money += 1000
-          group.save()
 
           if result == "Finished: SUCCESS":  # build 성공창 출력
               # build 기록에 성공 여부 지정
               build.result = "Success"
+              # group 이용 금액 증가
+              group.money += 1000
+              group.save()
               # 작업 이력 저장
               build.save()
               return render(request, 'board/successpage.html')
@@ -195,6 +198,9 @@ def startcicd(request,rname): # rname 은 리전 선택창에서 선택한 리�
             # shell 을 통해 jenkins 에 데이터 전달 및 실행
             # 표준 입출력에 대해 Pipe 를 열어서 build 성공 여부를 가져온다
             result = subprocess.Popen(['/var/www/django/board/calljenkins.sh %s %s %s %s %s %s %s %s' % (userid, repo_name, cluster_name, githubrepo_address, aws_access_key_id, aws_secret_access_key, region,way)], shell=True, stdout=subprocess.PIPE)
+            # 반환 결과를 복호화
+            result = result.communicate()[0]
+            result = result.decode('ascii')
 
             # 현재 작업 실행 시간 가져오기
             now = datetime.now()
@@ -210,13 +216,12 @@ def startcicd(request,rname): # rname 은 리전 선택창에서 선택한 리�
             build.repo = repo_name
             build.cluster = cluster_name
 
-            # group 이용 금액 증가
-            group.money += 1000
-            group.save()
-
             if result == "Finished: SUCCESS": #build 성공창 출력
                 # build 기록에 성공 여부 지정
                 build.result = "Success"
+                # group 이용 금액 증가
+                group.money += 1000
+                group.save()
                 # 작업 이력 저장
                 build.save()
                 return render(request, 'board/successpage.html')
@@ -271,7 +276,7 @@ def terms_and_conditions(request):
 
 @login_required(login_url='/accounts/login')
 def buildhistroy(request):
-    build_id = Build.objects.filter(group=request.user.group).values('id')
+    id = Build.objects.filter(group=request.user.group).values('id')
     username = Build.objects.filter(group=request.user.group).values('username')
     result = Build.objects.filter(group=request.user.group).values('result')
     time = Build.objects.filter(group=request.user.group).values('time')
@@ -279,7 +284,8 @@ def buildhistroy(request):
     repo = Build.objects.filter(group=request.user.group).values('repo')
     cluster = Build.objects.filter(group=request.user.group).values('cluster')
     git = Build.objects.filter(group=request.user.group).values('git')
-    dict_list = zip(build_id,username,result,time,cicd,repo,cluster,git)
-    print(dict_list)
-    context = {'dict_list':dict_list, 'build_id':build_id, 'username':username, 'result':result, 'time':time, 'cicd':cicd, 'repo':repo, 'cluster':cluster, 'git':git}
+
+    dict_list = zip(id,username,result,time,cicd,repo,cluster,git)
+
+    context = {'dict_list':dict_list}
     return render(request, 'board/buildhistory.html', context)

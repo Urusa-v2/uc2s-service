@@ -156,7 +156,7 @@ def startci(request,rname): # rname 은 리전 선택창에서 선택한 리전�
               build.result = "Fail"
               # 작업 이력 저장
               build.save()
-              return render(request, 'board/successpage.html')
+              return render(request, 'board/failurepage.html')
         else:
           return redirect('/')  
 
@@ -225,7 +225,7 @@ def startcicd(request,rname): # rname 은 리전 선택창에서 선택한 리�
                 build.result = "Fail"
                 # 작업 이력 저장
                 build.save()
-                return render(request, 'board/successpage.html')
+                return render(request, 'board/failurepage.html')
         else:
             return redirect('/')
 
@@ -271,12 +271,12 @@ def terms_and_conditions(request):
 
 @login_required(login_url='/accounts/login')
 def buildhistroy(request):
-    username = Build.Objects.filter(group=request.user.group).values('username')
-    result = Build.Objects.filter(group=request.user.group).values('result')
-    time = Build.Objects.filter(group=request.user.group).values('time')
-    cicd = Build.Objects.filter(group=request.user.group).values('cicd')
-    repo = Build.Objects.filter(group=request.user.group).values('repo')
-    cluster = Build.Objects.filter(group=request.user.group).values('cluster')
-    git = Build.Objects.filter(group=request.user.group).values('git')
+    username = Build.objects.filter(group=request.user.group).values('username')
+    result = Build.objects.filter(group=request.user.group).values('result')
+    time = Build.objects.filter(group=request.user.group).values('time')
+    cicd = Build.objects.filter(group=request.user.group).values('cicd')
+    repo = Build.objects.filter(group=request.user.group).values('repo')
+    cluster = Build.objects.filter(group=request.user.group).values('cluster')
+    git = Build.objects.filter(group=request.user.group).values('git')
     context = {'username':username, 'result':result, 'time':time, 'cicd':cicd, 'repo':repo, 'cluster':cluster, 'git':git}
-    return render(request, 'board/showbuildhistory.html', context)
+    return render(request, 'board/buildhistory.html', context)

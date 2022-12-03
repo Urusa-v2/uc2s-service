@@ -21,41 +21,42 @@
             <h5 class="card-title">리전을 선택하세요</h5>
 
             <!-- General Form Elements -->
-            <form method="post" >
+            <form method="post">
                 {% csrf_token %}
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">리전 선택</label>
                     <div class="col-sm-10">
-                        <select name="region" class="form-select" aria-label="Default select example" required="required">
-                    <option value="">리전 목록</option>
-                    <option value="us-east-2">US East (Ohio)</option>
-                    <option value="us-east-1">US East (N. Virginia)</option>
-                    <option value="us-west-1">US West (N. California)</option>
-                    <option value="us-west-2">US West (Oregon)</option>
-                    <option value="af-south-1">Africa (Cape Town)</option>
-                    <option value="ap-east-1">Asia Pacific (Hong Kong)</option>
-                    <option value="ap-south-1">Asia Pacific (Mumbai)</option>
-                    <option value="ap-northeast-3">Asia Pacific (Osaka)</option>
-                    <option value="ap-northeast-2">Asia Pacific (Seoul)</option>
-                    <option value="ap-southeast-1">Asia Pacific (Singapore)</option>
-                    <option value="ap-southeast-2">Asia Pacific (Sydney)</option>
-                    <option value="ap-southeast-3">Asia Pacific (Jakarta)</option>
-                    <option value="ap-northeast-1">Asia Pacific (Tokyo)</option>
-                    <option value="ca-central-1">Canada (Central)</option>
-                    <option value="cn-north-1">China (Beijing)</option>
-                    <option value="cn-northwest-1">China (Ningxia)</option>
-                    <option value="eu-central-1">Europe (Frankfurt)</option>
-                    <option value="eu-west-1">Europe (Ireland)</option>
-                    <option value="eu-west-2">Europe (London)</option>
-                    <option value="eu-west-3">Europe (Paris)</option>
-                    <option value="eu-north-1">Europe (Stockholm)</option>
-                    <option value="eu-south-1">Europe (Milan)</option>
-                    <option value="me-south-1">Middle East (Bahrain)</option>
-                    <option value="me-central-1">Middle East (UAE)</option>
-                    <option value="sa-east-1">South America (São Paulo)</option>
-                    <option value="us-gov-west-1">AWS GovCloud (US-West)</option>
-                    <option value="us-gov-east-1">AWS GovCloud (US-East)</option>
-                </select>
+                        <select name="region" class="form-select" aria-label="Default select example"
+                                required="required">
+                            <option value="">리전 목록</option>
+                            <option value="us-east-2">US East (Ohio)</option>
+                            <option value="us-east-1">US East (N. Virginia)</option>
+                            <option value="us-west-1">US West (N. California)</option>
+                            <option value="us-west-2">US West (Oregon)</option>
+                            <option value="af-south-1">Africa (Cape Town)</option>
+                            <option value="ap-east-1">Asia Pacific (Hong Kong)</option>
+                            <option value="ap-south-1">Asia Pacific (Mumbai)</option>
+                            <option value="ap-northeast-3">Asia Pacific (Osaka)</option>
+                            <option value="ap-northeast-2">Asia Pacific (Seoul)</option>
+                            <option value="ap-southeast-1">Asia Pacific (Singapore)</option>
+                            <option value="ap-southeast-2">Asia Pacific (Sydney)</option>
+                            <option value="ap-southeast-3">Asia Pacific (Jakarta)</option>
+                            <option value="ap-northeast-1">Asia Pacific (Tokyo)</option>
+                            <option value="ca-central-1">Canada (Central)</option>
+                            <option value="cn-north-1">China (Beijing)</option>
+                            <option value="cn-northwest-1">China (Ningxia)</option>
+                            <option value="eu-central-1">Europe (Frankfurt)</option>
+                            <option value="eu-west-1">Europe (Ireland)</option>
+                            <option value="eu-west-2">Europe (London)</option>
+                            <option value="eu-west-3">Europe (Paris)</option>
+                            <option value="eu-north-1">Europe (Stockholm)</option>
+                            <option value="eu-south-1">Europe (Milan)</option>
+                            <option value="me-south-1">Middle East (Bahrain)</option>
+                            <option value="me-central-1">Middle East (UAE)</option>
+                            <option value="sa-east-1">South America (São Paulo)</option>
+                            <option value="us-gov-west-1">AWS GovCloud (US-West)</option>
+                            <option value="us-gov-east-1">AWS GovCloud (US-East)</option>
+                        </select>
                     </div>
                 </div>
 
@@ -68,21 +69,30 @@
 
             </form><!-- End General Form Elements -->
 
-                      <!-- Card with an image on left -->
-          <div class="card mb-3">
-            <div class="row g-0">
-              <div class="col-md-4">
-                <img src="{% static 'assets/img/example-github.PNG' %}" class="img-fluid rounded-start" alt="...">
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title">왼쪽 사항을 준비해주세요</h5>
-                  <p class="card-text">강조 부분을 확인해주세요. Github 레포지토리에 다음 파일을 올리고, 레포지토리 주소를 준비해주세요. 레포지토리에는 Dockerfile ( 필수 ) 과 기타 필요 파일 ( 선택 ) 을 올려주시면 됩니다</p>
+            <!-- Basic Modal -->
+            <a href="#basicModal" data-bs-toggle="modal" data-bs-target="#basicModal">
+                Github 설정 예시
+            </a>
+            <div class="modal fade" id="basicModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Github 설정 예시</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <img src="{% static 'assets/img/example-github2.png' %}"
+                                 style="width:450px;height:300px">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">닫기
+                            </button>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div><!-- End Card with an image on left -->
-
+            </div><!-- End Basic Modal-->
         </div>
     </div>
 

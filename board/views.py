@@ -145,7 +145,7 @@ def startci(request,rname): # rname 은 리전 선택창에서 선택한 리전�
           build.cluster = "No Cluster"
 
 
-          if result == "Finished: SUCCESS":  # build 성공창 출력
+          if "SUCCESS" in result:  # build 성공창 출력
               # build 기록에 성공 여부 지정
               build.result = "Success"
               # group 이용 금액 증가
@@ -216,7 +216,7 @@ def startcicd(request,rname): # rname 은 리전 선택창에서 선택한 리�
             build.repo = repo_name
             build.cluster = cluster_name
 
-            if result == "Finished: SUCCESS": #build 성공창 출력
+            if "SUCCESS" in result: #build 성공창 출력
                 # build 기록에 성공 여부 지정
                 build.result = "Success"
                 # group 이용 금액 증가

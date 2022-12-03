@@ -6,12 +6,12 @@
 {% block contents %}
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>Who Are You?</h1>
+        <h1>직책 선택하기</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item">Sign Up</li>
-                <li class="breadcrumb-item active">Choose</li>
+                <li class="breadcrumb-item"><a href="/">홈</a></li>
+                <li class="breadcrumb-item">회원가입</li>
+                <li class="breadcrumb-item active">직책 선택</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -20,12 +20,12 @@
 
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Leader Account</h5>
-                <p>If you are the leader of your team, please choose this. You can create a group, and you have the authority to be a leader.</p>
+                <h5 class="card-title">리더 계정 생성</h5>
+                <p>팀의 리더 계정을 생성합니다. 리더 계정에서는 그룹을 생성할 수 있고, 리더의 권한을 가지며 토큰을 입력할 수 있습니다.</p>
 
                 <!-- Basic Modal -->
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal">
-                    Choose
+                    선택
                 </button>
                 <div class="modal fade" id="basicModal" tabindex="-1">
                     <div class="modal-dialog">
@@ -39,8 +39,8 @@
                                 리더를 선택하시겠습니까?
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" onclick="location.href='/accounts/creategroup'">Go</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                <button type="button" class="btn btn-primary" onclick="location.href='/accounts/creategroup'">가입</button>
                             </div>
                         </div>
                     </div>
@@ -52,12 +52,12 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Developer Account</h5>
-                <p>If you are the developer of your team, please choose this. You can choose your group.</p>
+                <h5 class="card-title">개발자 계정 생성</h5>
+                <p>팀의 개발자 계정을 생성합니다. 개발자 계정에서는 그룹을 선택할 수 있습니다.</p>
 
                 <!-- Basic Modal -->
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal2">
-                    Choose
+                    선택
                 </button>
                 <div class="modal fade" id="basicModal2" tabindex="-1">
                     <div class="modal-dialog">
@@ -71,9 +71,9 @@
                                 개발자를 선택하시겠습니까?
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기
                                 </button>
-                                <button type="button" class="btn btn-primary" onclick="location.href='/accounts/signup'">Go</button>
+                                <button type="button" class="btn btn-primary" onclick="location.href='/accounts/signup'">가입</button>
                             </div>
                         </div>
                     </div>

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Pages / Register - NiceAdmin Bootstrap Template</title>
+    <title>그룹 생성</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -69,19 +69,19 @@
                             <div class="card-body">
 
                                 <div class="pt-4 pb-2">
-                                    <h5 class="card-title text-center pb-0 fs-4">Create an Group</h5>
-                                    <p class="text-center small">Enter your group</p>
+                                    <h5 class="card-title text-center pb-0 fs-4">그룹 생성하기</h5>
+                                    <p class="text-center small">그룹 이름을 입력해주세요</p>
                                 </div>
 
                                 <form class="row g-3 needs-validation" novalidate method="post">
                                     {% csrf_token %}
                                     <div class="col-12">
-                                        <label for="yourGroup" class="form-label">Group Name</label>
+                                        <label for="yourGroup" class="form-label">그룹 이름</label>
                                         <input type="text" name="name" class="form-control" id="yourGroup" required>
                                         <div class="invalid-feedback">Please, enter your group name!</div>
                                     </div>
                                     <div class="col-12">
-                                        <button class="btn btn-primary w-100" type="submit">Next</button>
+                                        <button class="btn btn-primary w-100" type="submit">다음으로</button>
                                     </div>
                                 </form>
 

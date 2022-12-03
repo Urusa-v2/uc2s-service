@@ -6,11 +6,11 @@
 {% block contents %}
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>Form Elements</h1>
+        <h1>CI 작업 정보</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item">Pipeline</li>
+                <li class="breadcrumb-item"><a href="/">홈</a></li>
+                <li class="breadcrumb-item">파이프라인</li>
                 <li class="breadcrumb-item active">CI</li>
             </ol>
         </nav>
@@ -18,18 +18,18 @@
 
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">General Form Elements</h5>
+            <h5 class="card-title">CI 작업 정보 입력</h5>
             <!-- General Form Elements -->
             <form method="post">
                 {% csrf_token %}
                 <div class="row mb-3">
-                    <label for="regiontext" class="col-sm-2 col-form-label">Region</label>
+                    <label for="regiontext" class="col-sm-2 col-form-label">리전</label>
                     <div class="col-sm-10">
                         <input type="text" name="region" value= "{{ region }}" class="form-control" id="regiontext" readonly >
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="inputGitAddress" class="col-sm-2 col-form-label">GIT Address</label>
+                    <label for="inputGitAddress" class="col-sm-2 col-form-label">GIT 레포지토리 주소</label>
                     <div class="col-sm-10">
                         <input type="text" name="githubrepo_address" class="form-control" id="inputGitAddress" required>
                     </div>
@@ -42,10 +42,10 @@
                 </div> -->
 
                 <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label">ECR Repository</label>
+                    <label class="col-sm-2 col-form-label">ECR 저장소</label>
                     <div class="col-sm-10">
                         <select name="repository_name" class="form-select" aria-label="Default select example" required="required">
-                            <option value=""> ECR Repository Select</option>
+                            <option value=""> ECR 저장소 선택</option>
                             {% for repo_name,repo_uri,created_at in repo_list.dict_list %}
                             <option value="{{ repo_uri }}">{{ repo_name }}</option>
                             {% endfor %}
@@ -55,9 +55,9 @@
                 </div>
 
                 <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label">Submit</label>
+                    <label class="col-sm-2 col-form-label">작업 시작</label>
                     <div class="col-sm-10">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary">실행</button>
                     </div>
                 </div>
 

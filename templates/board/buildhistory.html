@@ -24,14 +24,14 @@
         <tbody>
             {% for build_id,username,cicd,repo,cluster,git,result,time in dict_list %}
             <tr>
-                <td>{{ build_id }}</td>
-                <td>{{ username }}</td>
-                <td>{{ cicd }}</td>
-                <td>{{ repo }}</td>
-                <td>{{ cluster }}</td>
-                <td>{{ git }}</td>
-                <td>{{ result }}</td>
-                <td>{{ time }}</td>
+                <td>{{ build_id.id }}</td>
+                <td>{{ username.username }}</td>
+                <td>{{ cicd.cicd }}</td>
+                <td>{{ repo.repo }}</td>
+                <td>{{ cluster.cluster }}</td>
+                <td>{{ git.git }}</td>
+                <td>{{ result.result }}</td>
+                <td>{{ time.time }}</td>
             </tr>
             {% endfor %}
         </tbody>

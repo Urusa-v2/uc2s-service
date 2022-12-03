@@ -271,9 +271,7 @@ def terms_and_conditions(request):
 
 @login_required(login_url='/accounts/login')
 def buildhistroy(request):
-    build = Build.Objects.get(group=request.user.group)
-    build_id = build.id
-
+    build_id = Build.Objects.filter(group=request.user.group).values('id')
     username = Build.Objects.filter(group=request.user.group).values('username')
     result = Build.Objects.filter(group=request.user.group).values('result')
     time = Build.Objects.filter(group=request.user.group).values('time')
@@ -281,5 +279,7 @@ def buildhistroy(request):
     repo = Build.Objects.filter(group=request.user.group).values('repo')
     cluster = Build.Objects.filter(group=request.user.group).values('cluster')
     git = Build.Objects.filter(group=request.user.group).values('git')
-    context = {'build_id':build_id, 'username':username, 'result':result, 'time':time, 'cicd':cicd, 'repo':repo, 'cluster':cluster, 'git':git}
+    dict_list = zip(build_id,username,result,time,cicd,repo,cluster,git)
+    print(dict_list)
+    context = {'dict_list':dict_list, 'build_id':build_id, 'username':username, 'result':result, 'time':time, 'cicd':cicd, 'repo':repo, 'cluster':cluster, 'git':git}
     return render(request, 'board/showbuildhistory.html', context)

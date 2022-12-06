@@ -68,14 +68,14 @@
                                     {% csrf_token %}
                                     <div class="col-12">
                                         <label for="aak" class="form-label"> AWS ACCESS KEY ID </label>
-                                        <input type="text" name="aws_access_key_id" class="form-control" id="aak"
+                                        <input type="password" name="aws_access_key_id" class="form-control" id="aak"
                                                required>
                                         <div class="invalid-feedback">AWS ACCESS KEY ID를 입력해주세요</div>
                                     </div>
 
                                     <div class="col-12">
                                         <label for="ask" class="form-label">AWS Secret Access Key</label>
-                                        <input type="text" name="aws_secret_access_key" class="form-control" id="ask"
+                                        <input type="password" name="aws_secret_access_key" class="form-control" id="ask"
                                                required>
                                         <div class="invalid-feedback">AWS Secret Access Key를 입력해주세요</div>
                                     </div>

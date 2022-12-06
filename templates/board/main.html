@@ -45,7 +45,7 @@
                     <div class="col-xxl-4 col-md-6">
                         <div class="card info-card revenue-card">
                             <div class="card-body">
-                                <h5 class="card-title">Worker 요금 <span>| 총합</span></h5>
+                                <h5 class="card-title">EC2 요금 <span>| 총합</span></h5>
                                 <div class="d-flex align-items-center">
                                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                         <i class="bi bi-currency-dollar"></i>
@@ -109,7 +109,7 @@
                           name: 'EKS',
                           data: {{ cost.costs }},
                         }, {
-                          name: 'worknode',
+                          name: 'EC2',
                           data: {{ ec2cost.ec2_costs }}
                         }],
                         chart: {
